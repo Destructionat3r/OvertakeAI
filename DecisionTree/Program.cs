@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace DecisionTree
+﻿namespace DecisionTreeSolution
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            DT dt = new DT();
+            dt.Run();
         }
     }
 }
