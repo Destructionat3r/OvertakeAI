@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            OvertakeData od = new OvertakeData();
-            od.GetData();
+            //OvertakeData od = new OvertakeData();
+            OvertakeData.GetData();
         }
     }
 }
