@@ -20,13 +20,8 @@ namespace DecisionTreeSolution
 
             Console.Write("Amount of data to train: ");
             int train = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
 
-            DataTable data = new DataTable(title);
-
-            data.Columns.Add("InitialSeperation", typeof(String));
-            data.Columns.Add("OvertakingSpeed", typeof(String));
-            data.Columns.Add("OncomingSpeed", typeof(String));
-            data.Columns.Add("Success", typeof(String));
             double[][] inputs = new double[3][] { new double[train], new double[train], new double[train] };
             int[] outputs = new int[train];
 
@@ -39,8 +34,17 @@ namespace DecisionTreeSolution
                 outputs[i] = Convert.ToInt32(overtake.Success);
             }
 
-            var learningAlgorithm = new C45Learning();
+            for (int j = 0; j < inputs[0].Length; j++)
+            {
+                Console.WriteLine($"Element {j}:");
+                Console.WriteLine($"InitialSeparation = {inputs[0][j]:F1} metres");
+                Console.WriteLine($"OvertakingSpeed = {inputs[1][j]:F1} m/s");
+                Console.WriteLine($"OncomingSpeed = {inputs[2][j]:F1} m / s");
+                Console.WriteLine($"Success = {outputs[j]}\n");
+                Console.WriteLine();
+            }
 
+            var learningAlgorithm = new C45Learning();
             DecisionTree tree = learningAlgorithm.Learn(inputs, outputs);
 
             Console.ReadKey();
