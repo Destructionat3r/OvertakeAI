@@ -15,6 +15,9 @@ namespace DecisionTreeSolution
     {
         public void Run()
         {
+            Library.Overtake overtake;
+            string[] possibleResults = { "Won't Pass", "Will Pass" };
+
             var title = "Decision Tree Method";
             Console.WriteLine(title);
 
@@ -27,13 +30,41 @@ namespace DecisionTreeSolution
 
             for (int i = 0; i < train; i++)
             {
-                Library.Overtake overtake = OvertakeData.GetData();
+                overtake = OvertakeData.GetData();
                 inputs[i] = new double[3] { overtake.InitialSeparationM, overtake.OvertakingSpeedMPS, overtake.OncomingSpeedMPS };
                 outputs[i] = Convert.ToInt32(overtake.Success);
             }
 
             var learningAlgorithm = new C45Learning();
             DecisionTree tree = learningAlgorithm.Learn(inputs, outputs);
+
+            overtake = OvertakeData.GetData();
+            double[] query = { overtake.InitialSeparationM, overtake.OvertakingSpeedMPS, overtake.OncomingSpeedMPS };
+            string actualOutcome;
+            if (overtake.Success == false)
+                actualOutcome = "Won't Pass";
+            else
+                actualOutcome = "Will Pass";
+
+            int predictedSingle = tree.Decide(query);
+            Console.WriteLine($"Initial Seperation: {query[0]:F1}m" +
+                $"\nOvertaking Speed: {query[1]:F1}m/s" +
+                $"\nOncoming Speed: {query[2]:F1}m/s" +
+                $"\nPredicted Outcome: {possibleResults[predictedSingle]}" +
+                $"\nActual Outcome: {actualOutcome}\n");
+
+            int[] predicted = tree.Decide(inputs);
+            double error = new ZeroOneLoss(outputs).Loss(predicted);
+
+            Console.WriteLine($"Training Error: {Math.Round(error, 2)}\n");
+
+            DecisionSet rules = tree.ToRules();
+
+            var codebook = new Codification("Possible Results", possibleResults);
+
+            var encodedRules = rules.ToString(codebook, "Possible Results", System.Globalization.CultureInfo.InvariantCulture);
+
+            Console.WriteLine($"{encodedRules}\n");
 
             Console.ReadKey();
         }
