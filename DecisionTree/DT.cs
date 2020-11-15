@@ -41,7 +41,6 @@ namespace DecisionTreeSolution
                 Console.WriteLine($"OvertakingSpeed = {inputs[1][j]:F1} m/s");
                 Console.WriteLine($"OncomingSpeed = {inputs[2][j]:F1} m / s");
                 Console.WriteLine($"Success = {outputs[j]}\n");
-                Console.WriteLine();
             }
 
             var learningAlgorithm = new C45Learning();
