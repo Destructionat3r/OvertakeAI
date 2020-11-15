@@ -34,13 +34,13 @@ namespace DecisionTreeSolution
                 outputs[i] = Convert.ToInt32(overtake.Success);
             }
 
-            for (int j = 0; j < inputs[0].Length; j++)
+            for (int i = 0; i < inputs[0].Length; i++)
             {
-                Console.WriteLine($"Element {j}:");
-                Console.WriteLine($"InitialSeparation = {inputs[0][j]:F1} metres");
-                Console.WriteLine($"OvertakingSpeed = {inputs[1][j]:F1} m/s");
-                Console.WriteLine($"OncomingSpeed = {inputs[2][j]:F1} m / s");
-                Console.WriteLine($"Success = {outputs[j]}\n");
+                Console.WriteLine($"Element {i}:");
+                Console.WriteLine($"InitialSeparation = {inputs[0][i]:F1} metres");
+                Console.WriteLine($"OvertakingSpeed = {inputs[1][i]:F1} m/s");
+                Console.WriteLine($"OncomingSpeed = {inputs[2][i]:F1} m / s");
+                Console.WriteLine($"Success = {outputs[i]}\n");
             }
 
             var learningAlgorithm = new C45Learning();
