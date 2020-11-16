@@ -1,10 +1,12 @@
-﻿namespace DecisionTreeSolution
+﻿using System;
+
+namespace DecisionTreeID3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            DTC45 dt = new DTC45();
+            DTID3 dt = new DTID3();
             dt.Run();
         }
     }

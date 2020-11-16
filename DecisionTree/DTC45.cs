@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Data; // for DataTable
-using System.Linq;
-using Accord.MachineLearning.DecisionTrees; // for DecisionVariable
-using Accord.MachineLearning.DecisionTrees.Learning; // for ID3Learning
-using Accord.MachineLearning.DecisionTrees.Rules; // for DecisionSet
-using Accord.Math; // for DataTable extensions such as ToArray;
-using Accord.Math.Optimization.Losses; // for ZeroOneLoss
-using Accord.Statistics.Filters; // for Codification
-using OvertakeAI;
+using Accord.MachineLearning.DecisionTrees; // For Decision Tree
+using Accord.MachineLearning.DecisionTrees.Learning; // For C45 Learning
+using Accord.MachineLearning.DecisionTrees.Rules; // For Decision Set
+using Accord.Math.Optimization.Losses; // For ZeroOneLoss
+using Accord.Statistics.Filters; // For Codification
+using OvertakeAI; //For Getting Data
 
 namespace DecisionTreeSolution
 {
-    class DT
+    class DTC45
     {
         public void Run()
         {
             Library.Overtake overtake;
             string[] possibleResults = { "Won't Pass", "Will Pass" };
 
-            Console.WriteLine("Decision Tree Method");
+            Console.WriteLine("Decision Tree - C45 Learning");
             Console.Write("Amount of data to train: ");
             int train = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
@@ -38,11 +35,7 @@ namespace DecisionTreeSolution
 
             overtake = OvertakeData.GetData();
             double[] query = { overtake.InitialSeparationM, overtake.OvertakingSpeedMPS, overtake.OncomingSpeedMPS };
-            string actualOutcome;
-            if (overtake.Success == false)
-                actualOutcome = "Won't Pass";
-            else
-                actualOutcome = "Will Pass";
+            string actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
 
             int predictedSingle = tree.Decide(query);
             Console.WriteLine($"Initial Seperation: {query[0]:F1}m" +
