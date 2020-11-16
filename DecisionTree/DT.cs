@@ -18,9 +18,7 @@ namespace DecisionTreeSolution
             Library.Overtake overtake;
             string[] possibleResults = { "Won't Pass", "Will Pass" };
 
-            var title = "Decision Tree Method";
-            Console.WriteLine(title);
-
+            Console.WriteLine("Decision Tree Method");
             Console.Write("Amount of data to train: ");
             int train = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
@@ -55,16 +53,12 @@ namespace DecisionTreeSolution
 
             int[] predicted = tree.Decide(inputs);
             double error = new ZeroOneLoss(outputs).Loss(predicted);
-
             Console.WriteLine($"Training Error: {Math.Round(error, 2)}\n");
 
             DecisionSet rules = tree.ToRules();
-
             var codebook = new Codification("Possible Results", possibleResults);
-
             var encodedRules = rules.ToString(codebook, "Possible Results", System.Globalization.CultureInfo.InvariantCulture);
-
-            Console.WriteLine($"{encodedRules}\n");
+            Console.WriteLine($"{encodedRules}");
 
             Console.ReadKey();
         }

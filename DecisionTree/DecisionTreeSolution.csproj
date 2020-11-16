@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\OvertakeAI\bin\Debug\netcoreapp3.1\Library.dll" Link="Library.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Accord.MachineLearning" Version="3.8.0" />
   </ItemGroup>
 
