@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetworkSolution", "Ne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNetSolution", "MLNetSolution\MLNetSolution.csproj", "{7EFE057D-BA8B-48B8-BD26-875EE366B734}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecisionTreeID3", "DecisionTreeID3\DecisionTreeID3.csproj", "{EC3667F1-78F3-4411-95AE-1CE0F9F6FBC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecisionTreeID3", "DecisionTreeID3\DecisionTreeID3.csproj", "{EC3667F1-78F3-4411-95AE-1CE0F9F6FBC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvertakeAIML.Model", "OvertakeAIML.Model\OvertakeAIML.Model.csproj", "{039576FE-FF9A-4573-8030-C05C522DC875}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{EC3667F1-78F3-4411-95AE-1CE0F9F6FBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3667F1-78F3-4411-95AE-1CE0F9F6FBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC3667F1-78F3-4411-95AE-1CE0F9F6FBC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{039576FE-FF9A-4573-8030-C05C522DC875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{039576FE-FF9A-4573-8030-C05C522DC875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{039576FE-FF9A-4573-8030-C05C522DC875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{039576FE-FF9A-4573-8030-C05C522DC875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
