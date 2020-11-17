@@ -6,7 +6,7 @@ using Accord.Math.Optimization.Losses; // For ZeroOneLoss
 using Accord.Statistics.Filters; // For Codification
 using OvertakeAI; //For Getting Data
 
-namespace DecisionTreeSolution
+namespace DecisionTreeC45
 {
     class DTC45
     {

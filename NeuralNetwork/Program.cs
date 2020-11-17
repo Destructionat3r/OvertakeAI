@@ -1,13 +1,14 @@
 ﻿using System;
 using OvertakeAI;
 
-namespace NeuralNetwork
+namespace NeuralNetworkSolution
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            NNSolution nn = new NNSolution();
+            nn.Run();
         }
     }
 }

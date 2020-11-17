@@ -1,4 +1,4 @@
-﻿namespace DecisionTreeSolution
+﻿namespace DecisionTreeC45
 {
     class Program
     {
