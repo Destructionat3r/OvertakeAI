@@ -22,7 +22,7 @@ namespace NeuralNetworkSolution
 
             var network = new NeuralNetwork(3, 5, 3, 0.2);            
 
-            Console.WriteLine($"Training network with {trainDataSet.Length} samples using {epochs} epochs...");
+            Console.WriteLine($"Training network with {trainDataSet.Length} samples using {epochs} epochs...\n");
 
             for (var epoch = 0; epoch < epochs; epoch++)
                 foreach (var data in trainDataSet)
@@ -51,7 +51,17 @@ namespace NeuralNetworkSolution
                 scoreCard.Add(answer == predicted);
             }
 
-            Console.WriteLine($"Performance is {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
+            string actualOutcome;
+            string answerOutcome;
+            Console.WriteLine("Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
+            for (var i = 0; i < testDataSet.Length; i++)
+            {
+                actualOutcome = Convert.ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
+                answerOutcome = scoreCard[i] ? "Correct" : "Incorrect";
+                Console.WriteLine($"{testDataSet[i][0], 18}{testDataSet[i][1], 23}{testDataSet[i][2], 21}{actualOutcome, 14}{answerOutcome, 17}");
+            }
+
+            Console.WriteLine($"\nPerformance is {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
 
             Console.ReadKey();
         }
