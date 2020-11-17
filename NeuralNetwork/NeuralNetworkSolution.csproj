@@ -13,4 +13,10 @@
     <ProjectReference Include="..\OvertakeAI\OvertakeAI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Library">
+      <HintPath>..\OvertakeAI\bin\Debug\netcoreapp3.1\Library.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
