@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NeuralNetworkSolution
 {
-    class NeuralNetwork
+    public class NeuralNetwork
     {
         private readonly double _learningRate;
         private Matrix _weightHiddenOutput;
@@ -13,16 +13,17 @@ namespace NeuralNetworkSolution
         {
             _learningRate = learningRate;
 
-            _weightHiddenOutput = Matrix.Create(numberOfOutputNodes, numberOfHiddenNodes);
             _weightInputHidden = Matrix.Create(numberOfHiddenNodes, numberOfInputNodes);
+            _weightHiddenOutput = Matrix.Create(numberOfOutputNodes, numberOfHiddenNodes);
 
             RandomizeWeights();
         }
 
-        public void RandomizeWeights()
+        private void RandomizeWeights()
         {
             var rnd = new Random();
 
+            //distribute -0.5 to 0.5.
             _weightHiddenOutput.Initialize(() => rnd.NextDouble() - 0.5);
             _weightInputHidden.Initialize(() => rnd.NextDouble() - 0.5);
         }

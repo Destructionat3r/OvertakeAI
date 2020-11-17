@@ -7,22 +7,20 @@ namespace NeuralNetworkSolution
 {
     class NNSolution
     {
-        private static readonly List<string> PossibleResults = new List<string> { "FALSE", "TRUE" };
+        private static readonly List<string> PossibleResults = new List<string> { "False", "True" };
 
         public void Run()
         {
             Console.WriteLine("Neural Network");
             Console.Write("Amount of data to train: ");
             int amountOfData = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Amount of epochs: ");
+            int epochs = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
 
             var trainDataSet = GetInputs(amountOfData).ToArray();
 
-            var network = new NeuralNetwork(4, 5, 3, 0.2);
-
-            Console.Write("Amount of epochs: ");
-            int epochs = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
+            var network = new NeuralNetwork(3, 5, 3, 0.2);            
 
             Console.WriteLine($"Training network with {trainDataSet.Length} samples using {epochs} epochs...");
 
@@ -32,7 +30,7 @@ namespace NeuralNetworkSolution
                     var targets = new[] { 0.01, 0.01, 0.01 };
                     targets[PossibleResults.IndexOf(data.Last())] = 0.99;
 
-                    var dataList = data.Take(4).Select(double.Parse).ToArray();
+                    var dataList = data.Take(3).Select(double.Parse).ToArray();
                     network.Train(NormalizeData(dataList), targets);
                 }
 
@@ -46,7 +44,7 @@ namespace NeuralNetworkSolution
 
             foreach (var data in testDataSet)
             {
-                var result = network.Query(NormalizeData(data.Take(4).Select(double.Parse).ToArray())).ToList();
+                var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray())).ToList();
                 var answer = PossibleResults[PossibleResults.IndexOf(data.Last())];
                 var predicted = PossibleResults[result.IndexOf(result.Max())];
 
@@ -54,6 +52,8 @@ namespace NeuralNetworkSolution
             }
 
             Console.WriteLine($"Performance is {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
+
+            Console.ReadKey();
         }
 
         public static string[][] GetInputs(int train)
@@ -72,12 +72,15 @@ namespace NeuralNetworkSolution
 
         private static double[] NormalizeData(double[] input)
         {
+            var maxInitialSeperation = 900;
+            var maxOvertakingSpeed = 900;
+            var maxOncomingSpeed = 900;
+
             var normalized = new[]
             {
-                input[0],
-                input[1],
-                input[2],
-                input[3]
+                (input[0]/maxInitialSeperation) + 0.01,
+                (input[1]/maxOvertakingSpeed) + 0.01,
+                (input[2]/maxOncomingSpeed) + 0.01
             };
 
             return normalized;
