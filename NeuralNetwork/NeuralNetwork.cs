@@ -23,7 +23,6 @@ namespace NeuralNetworkSolution
         {
             var rnd = new Random();
 
-            //distribute -0.5 to 0.5.
             _weightHiddenOutput.Initialize(() => rnd.NextDouble() - 0.5);
             _weightInputHidden.Initialize(() => rnd.NextDouble() - 0.5);
         }

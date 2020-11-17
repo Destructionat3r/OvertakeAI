@@ -142,7 +142,7 @@ namespace NeuralNetworkSolution
         {
             var rows = _matrix.Length;
 
-            var newMatrix = CreateJagged(_matrix[0].Length, rows); //rows --> cols, cols --> rows
+            var newMatrix = CreateJagged(_matrix[0].Length, rows);
 
             for (var row = 0; row < rows; row++)
                 for (var col = 0; col < _matrix[row].Length; col++)
