@@ -82,9 +82,9 @@ namespace NeuralNetworkSolution
 
         private static double[] NormalizeData(double[] input)
         {
-            var maxInitialSeperation = 900;
-            var maxOvertakingSpeed = 900;
-            var maxOncomingSpeed = 900;
+            var maxInitialSeperation = 280;
+            var maxOvertakingSpeed = 33;
+            var maxOncomingSpeed = 33;
 
             var normalized = new[]
             {
