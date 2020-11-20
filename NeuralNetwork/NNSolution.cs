@@ -14,20 +14,23 @@ namespace NeuralNetworkSolution
             Console.WriteLine("Neural Network");
             Console.Write("Amount of data to train: ");
             int amountOfData = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Amount of nodes in hidden layer: ");
+            int hiddenLayerNodes = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Learning Rate: ");
+            double learningRate = Convert.ToDouble(Console.ReadLine());
             Console.Write("Amount of epochs: ");
             int epochs = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
 
             var trainDataSet = GetInputs(amountOfData).ToArray();
 
-            var network = new NeuralNetwork(3, 5, 3, 0.2);            
+            var network = new NeuralNetwork(3, hiddenLayerNodes, 2, learningRate);            
 
-            Console.WriteLine($"Training network with {trainDataSet.Length} samples using {epochs} epochs...\n");
+            Console.WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...\n");
 
             for (var epoch = 0; epoch < epochs; epoch++)
                 foreach (var data in trainDataSet)
                 {
-                    var targets = new[] { 0.01, 0.01, 0.01 };
+                    var targets = new[] { 0.01, 0.01 };
                     targets[PossibleResults.IndexOf(data.Last())] = 0.99;
 
                     var dataList = data.Take(3).Select(double.Parse).ToArray();

@@ -26,7 +26,7 @@ namespace DecisionTreeC45Solution
             for (int i = 0; i < train; i++)
             {
                 overtake = OvertakeData.GetData();
-                inputs[i] = new double[3] { Math.Round(overtake.InitialSeparationM, 2), Math.Round(overtake.OvertakingSpeedMPS), Math.Round(overtake.OncomingSpeedMPS) };
+                inputs[i] = new double[3] { overtake.InitialSeparationM, overtake.OvertakingSpeedMPS, overtake.OncomingSpeedMPS };
                 outputs[i] = Convert.ToInt32(overtake.Success);
             }
 
