@@ -46,7 +46,7 @@ namespace MLNetSolution
             Console.WriteLine($"OvertakingSpeed: {sampleData.OvertakingSpeed}");
             Console.WriteLine($"OncomingSpeed: {sampleData.OncomingSpeed}");
             Console.WriteLine($"ActualResult: {overtake.Success}");
-            Console.WriteLine($"\nPredicted Success Value: {predictionResult.Prediction} \nPredicted Success Scores: [{String.Join(",", predictionResult.Score)}]\n");
+            Console.WriteLine($"\nPredicted Success Value: {predictionResult.Prediction} \nPredicted Success Scores: [{Math.Round(predictionResult.Score[0], 2)}, {Math.Round(predictionResult.Score[1], 2)}]\n");
             Console.WriteLine("=============== End of process, hit any key to finish ===============");
             Console.ReadKey();
         }

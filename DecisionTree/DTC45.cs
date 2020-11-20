@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Accord.MachineLearning.DecisionTrees; // For Decision Tree
 using Accord.MachineLearning.DecisionTrees.Learning; // For C45 Learning
 using Accord.MachineLearning.DecisionTrees.Rules; // For Decision Set
@@ -33,21 +35,35 @@ namespace DecisionTreeC45Solution
             var learningAlgorithm = new C45Learning();
             DecisionTree tree = learningAlgorithm.Learn(inputs, outputs);
 
-            overtake = OvertakeData.GetData();
-            double[] query = { overtake.InitialSeparationM, overtake.OvertakingSpeedMPS, overtake.OncomingSpeedMPS };
-            string actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
+            Console.Write("Amount of data to predict: ");
+            int test = Convert.ToInt32(Console.ReadLine());
+            double[] query = new double[3];
+            var scoreCard = new List<bool>();
+            string answerOutcome;
 
-            int predictedSingle = tree.Decide(query);
-            Console.WriteLine($"Initial Seperation: {query[0]:F1}m" +
-                $"\nOvertaking Speed: {query[1]:F1}m/s" +
-                $"\nOncoming Speed: {query[2]:F1}m/s" +
-                $"\nPredicted Outcome: {possibleResults[predictedSingle]}" +
-                $"\nActual Outcome: {actualOutcome}\n");
+            Console.WriteLine("Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
+            for (int i = 0; i < test; i++)
+            {
+                overtake = OvertakeData.GetData();
+                query[0] = overtake.InitialSeparationM;
+                query[1] = overtake.OvertakingSpeedMPS;
+                query[2] = overtake.OncomingSpeedMPS;
+                outputs[i] = Convert.ToInt32(overtake.Success);
+                int predictedSingle = tree.Decide(query); 
+                string actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
+                scoreCard.Add(actualOutcome == possibleResults[predictedSingle]); 
+                actualOutcome = Convert.ToBoolean(overtake.Success) ? "Will Pass" : "Won't Pass";
+                answerOutcome = scoreCard[i] ? "Correct" : "Incorrect";
+                Console.WriteLine($"{query[0],18}{query[1],23}{query[2],21}{actualOutcome,14}{answerOutcome,17}");
+            }
+
+            Console.WriteLine($"\nPerformance: {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
 
             int[] predicted = tree.Decide(inputs);
             double error = new ZeroOneLoss(outputs).Loss(predicted);
             Console.WriteLine($"Training Error: {Math.Round(error, 2)}\n");
 
+            Console.WriteLine("Decision Tree Rules:");
             DecisionSet rules = tree.ToRules();
             var codebook = new Codification("Possible Results", possibleResults);
             var encodedRules = rules.ToString(codebook, "Possible Results", System.Globalization.CultureInfo.InvariantCulture);
