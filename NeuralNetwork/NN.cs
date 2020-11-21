@@ -65,7 +65,11 @@ namespace NeuralNetwork
             string answerOutcome;
 
             //Print out all the test data
-            WriteLine("Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
+            WriteLine($"{"Initial Seperation",18}" +
+                $"{"Overtaking Speed",23}" +
+                $"{"Oncoming Speed",21}" +
+                $"{"Outcome",14}" +
+                $"{"Prediction",17}");
 
             for (var i = 0; i < testDataSet.Length; i++)
             {
@@ -80,20 +84,27 @@ namespace NeuralNetwork
 
 
             //Count amount of correct values in score card to show accuracy percentage
-            double accuracy = (scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100;
+            double accuracy = Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2);
             WriteLine($"\nAccuracy: {accuracy}%");
-
-            //Create file if it doesn't exist and insert headings then print data or just print data
+            
             string path = @"..\..\..\neuralNetworkLog.csv";
-            var csv = new StringBuilder();
+            var csv = new StringBuilder();            
 
+            //Check if neuralNetworkLog exists
             if (!File.Exists(path))
             {
-                var csvHeadings = "TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy";
+                //Create file if it doesn't exist with no data
+                File.WriteAllText(path, null);
+                var csvHeadings = "TestNo,TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy";
                 csv.AppendLine(csvHeadings);
             }
 
-            var csvData = $"{train},{hiddenLayerNodes},{learningRate},{epochs},{test},{accuracy}";
+            //Load data from neuralNetworkLog and skip headings
+            List<string> loadedCsv = File.ReadAllLines(path).Skip(1).ToList();
+            int testNo = loadedCsv.Count();
+
+            //Output data to neuralNetworkLog csv file
+            var csvData = $"{testNo + 1},{train},{hiddenLayerNodes},{learningRate},{epochs},{test},{accuracy}";
             csv.AppendLine(csvData);
 
             //Write the data to csv file

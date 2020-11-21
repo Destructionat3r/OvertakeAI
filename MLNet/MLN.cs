@@ -26,7 +26,10 @@ namespace MLNet
 
             //Create file if it doesn't exist or overwrite it with null data
             File.WriteAllText(path, null);
-            var data = "InitialSeperation,OvertakingSpeed,OncomingSpeed,Success";
+            var data = "InitialSeperation," +
+                "OvertakingSpeed," +
+                "OncomingSpeed," +
+                "Success";
             csv.AppendLine(data);
 
             //Get data from OvertakeAI program and add it to csv var
@@ -38,7 +41,10 @@ namespace MLNet
                 if (i == 0)
                     firstSuccess = overtake.Success;
 
-                data = $"{overtake.InitialSeparationM},{overtake.OvertakingSpeedMPS},{overtake.OncomingSpeedMPS},{overtake.Success}";
+                data = $"{overtake.InitialSeparationM}," +
+                    $"{overtake.OvertakingSpeedMPS}," +
+                    $"{overtake.OncomingSpeedMPS}," +
+                    $"{overtake.Success}";
                 csv.AppendLine(data);
             }
 
@@ -62,7 +68,14 @@ namespace MLNet
             //Test data and print it out
             WriteLine("\nUsing model to make predictions -- Comparing actual Success with predicted Success from sample data...\n");
 
-            WriteLine($"Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction     Pass Chance     Won't Pass Chance");
+            WriteLine($"{"Initial Seperation",18}" +
+                $"{"Overtaking Speed",23}" +
+                $"{"Oncoming Speed",21}" +
+                $"{"Outcome",14}" +
+                $"{"Prediction",17}" +
+                $"{"Pass Chance",16}" +
+                $"{"Won't Pass Chance",22}");
+
             for (int i = 0; i < test; i++)
             {
                 //Get the data from OvertakeAI
@@ -71,7 +84,8 @@ namespace MLNet
                 { 
                     InitialSeperation = (float)overtake.InitialSeparationM, 
                     OvertakingSpeed = (float)overtake.OvertakingSpeedMPS, 
-                    OncomingSpeed = (float)overtake.OncomingSpeedMPS };
+                    OncomingSpeed = (float)overtake.OncomingSpeedMPS 
+                };
                 string outcome = overtake.Success.ToString();
                 actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
 
@@ -103,7 +117,7 @@ namespace MLNet
             }
 
             //Count amount of correct values in score card to show accuracy percentage
-            WriteLine($"\nAccuracy: {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
+            WriteLine($"\nAccuracy: {Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2)}%");
         }
     }
 }

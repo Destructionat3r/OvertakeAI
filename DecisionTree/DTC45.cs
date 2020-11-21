@@ -29,7 +29,12 @@ namespace DecisionTreeC45
             for (int i = 0; i < train; i++)
             {
                 overtake = OvertakeData.GetData();
-                trainInputs[i] = new double[3] { overtake.InitialSeparationM, overtake.OvertakingSpeedMPS, overtake.OncomingSpeedMPS };
+                trainInputs[i] = new double[3] 
+                { 
+                    overtake.InitialSeparationM, 
+                    overtake.OvertakingSpeedMPS, 
+                    overtake.OncomingSpeedMPS 
+                };
                 trainOutputs[i] = Convert.ToInt32(overtake.Success);
             }
 
@@ -75,7 +80,7 @@ namespace DecisionTreeC45
             }
 
             //Count amount of correct values in score card to show accuracy percentage
-            WriteLine($"\nAccuracy: {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
+            WriteLine($"\nAccuracy: {Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2)}%");
 
             //Get the training error of the decision tree
             int[] predicted = tree.Decide(trainInputs);
