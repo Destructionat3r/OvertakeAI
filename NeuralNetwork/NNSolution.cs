@@ -76,7 +76,7 @@ namespace NeuralNetworkSolution
             WriteLine($"\nAccuracy: {accuracy}%");
 
             //Create file if it doesn't exist and insert headings then print data or just print data
-            string path = "neuralNetworkLog.csv";
+            string path = @"..\..\..\neuralNetworkLog.csv";
             var csv = new StringBuilder();
 
             if (!File.Exists(path))
