@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DecisionTreeC45Solution
+namespace DecisionTreeC45
 {
     class Program
     {

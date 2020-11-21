@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace MLNetSolution
+namespace MLNet
 {
     class Program
     {
         static void Main(string[] args)
         {
             Console.SetWindowSize(132, Console.WindowHeight);
-            MLNet ml = new MLNet();
+            MLN ml = new MLN();
             ml.Run();
             Console.ReadKey();
         }

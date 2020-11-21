@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvertakeAI", "OvertakeAI\OvertakeAI.csproj", "{86061FE2-B662-4BAA-ACCA-7885C6464DA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecisionTreeC45Solution", "DecisionTree\DecisionTreeC45Solution.csproj", "{82516808-F5CB-43F6-BF93-C1C19B5EE35E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecisionTreeC45", "DecisionTree\DecisionTreeC45.csproj", "{82516808-F5CB-43F6-BF93-C1C19B5EE35E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetworkSolution", "NeuralNetwork\NeuralNetworkSolution.csproj", "{2446286D-6095-4112-9DC9-720ECFA1933B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetwork", "NeuralNetwork\NeuralNetwork.csproj", "{2446286D-6095-4112-9DC9-720ECFA1933B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNetSolution", "MLNetSolution\MLNetSolution.csproj", "{7EFE057D-BA8B-48B8-BD26-875EE366B734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLNet", "MLNet\MLNet.csproj", "{7EFE057D-BA8B-48B8-BD26-875EE366B734}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvertakeAIML.Model", "OvertakeAIML.Model\OvertakeAIML.Model.csproj", "{039576FE-FF9A-4573-8030-C05C522DC875}"
 EndProject

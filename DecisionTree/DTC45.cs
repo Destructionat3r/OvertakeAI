@@ -9,7 +9,7 @@ using Accord.MachineLearning.DecisionTrees.Rules; //For Decision Set
 using Accord.MachineLearning.DecisionTrees.Learning; //For C45 Learning
 using static System.Console; //For Read/Write Line
 
-namespace DecisionTreeC45Solution
+namespace DecisionTreeC45
 {
     class DTC45
     {

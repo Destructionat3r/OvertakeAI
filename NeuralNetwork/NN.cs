@@ -6,14 +6,15 @@ using System.Text; //For Using StringBuilder
 using System.Collections.Generic; //For ScoreCard Bool List
 using static System.Console; //For Read/Write Line
 
-namespace NeuralNetworkSolution
+namespace NeuralNetwork
 {
-    class NNSolution
+    class NN
     {
         private static readonly List<string> PossibleResults = new List<string> { "False", "True" };
 
         public void Run()
         {
+            //Get wanted variables from the user
             WriteLine("Neural Network");
             Write("Amount of data to train: ");
             int train = Convert.ToInt32(ReadLine());
@@ -24,12 +25,15 @@ namespace NeuralNetworkSolution
             Write("Amount of epochs: ");
             int epochs = Convert.ToInt32(ReadLine());
 
+            //Get data OvertakeAI program
             var trainDataSet = GetInputs(train).ToArray();
 
-            var network = new NeuralNetwork(3, hiddenLayerNodes, 2, learningRate);            
+            //Create neural network
+            var network = new NNModel(3, hiddenLayerNodes, 2, learningRate);            
 
             WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...\n");
 
+            //Train the neural network with desired amount of epochs
             for (var epoch = 0; epoch < epochs; epoch++)
                 foreach (var data in trainDataSet)
                 {
@@ -40,25 +44,27 @@ namespace NeuralNetworkSolution
                     network.Train(NormalizeData(dataList), targets);
                 }
 
-            var scoreCard = new List<bool>();
-
+            //Get the amount of data the user wants to predict against the neural network
             Write("Amount of data to predict: ");
             int test = Convert.ToInt32(ReadLine());
             WriteLine();
 
             var testDataSet = GetInputs(test).ToArray();
+            var scoreCard = new List<bool>();
 
+            //Test the data against neural network and make predictions
             foreach (var data in testDataSet)
             {
                 var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray())).ToList();
                 var answer = PossibleResults[PossibleResults.IndexOf(data.Last())];
                 var predicted = PossibleResults[result.IndexOf(result.Max())];
-
                 scoreCard.Add(answer == predicted);
             }
 
             string actualOutcome;
             string answerOutcome;
+
+            //Print out all the test data
             WriteLine("Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
 
             for (var i = 0; i < testDataSet.Length; i++)
@@ -72,6 +78,8 @@ namespace NeuralNetworkSolution
                     $"{answerOutcome, 17}");
             }
 
+
+            //Count amount of correct values in score card to show accuracy percentage
             double accuracy = (scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100;
             WriteLine($"\nAccuracy: {accuracy}%");
 
@@ -92,12 +100,13 @@ namespace NeuralNetworkSolution
             File.AppendAllText(path, csv.ToString());
         }
 
-        public static string[][] GetInputs(int train)
+        //Get data from the OvertakeAI program
+        public static string[][] GetInputs(int loop)
         {
             Library.Overtake overtake;
-            string[][] data = new string[train][];
+            string[][] data = new string[loop][];
 
-            for (int i = 0; i < train; i++)
+            for (int i = 0; i < loop; i++)
             {
                 overtake = OvertakeData.GetData();
                 data[i] = new string[4] 
@@ -112,6 +121,7 @@ namespace NeuralNetworkSolution
             return data;
         }
 
+        //Normalize the data to be trained/tested
         private static double[] NormalizeData(double[] input)
         {
             var maxInitialSeperation = 280;

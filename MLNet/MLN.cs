@@ -7,18 +7,18 @@ using OvertakeAIML.Model; //For The ML.Net Model
 using System.Collections.Generic; //For ScoreCard Bool List
 using static System.Console; //For Read/Write Line
 
-namespace MLNetSolution
+namespace MLNet
 {
-    class MLNet
+    class MLN
     {
         public void Run()
         {
-            string path = "testData.csv";
+            string path = @"..\..\..\testData.csv";
             Library.Overtake overtake;
             bool firstSuccess = true;
             var csv = new StringBuilder();
 
-            //Get amount of data the user wants the decision tree to train
+            //Get amount of data the user to train
             WriteLine("ML.Net");
             Write("Amount of data to train: ");
             int train = Convert.ToInt32(ReadLine());
@@ -48,8 +48,7 @@ namespace MLNetSolution
             //Create ML.Net model
             ModelBuilder.CreateModel();
 
-
-            //Get the amount of data the user wants to predict against the decision tree
+            //Get the amount of data the user wants to predict against the model
             Write("\nAmount of data to predict: ");
             int test = Convert.ToInt32(ReadLine());
 

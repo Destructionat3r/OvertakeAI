@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace NeuralNetworkSolution
+namespace NeuralNetwork
 {
     public class Matrix
     {

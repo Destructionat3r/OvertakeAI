@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace NeuralNetworkSolution
+namespace NeuralNetwork
 {
     class Program
     {
         static void Main(string[] args)
         {
-            NNSolution nn = new NNSolution();
+            NN nn = new NN();
             nn.Run();
             Console.ReadKey();
         }

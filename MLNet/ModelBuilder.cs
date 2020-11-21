@@ -9,11 +9,11 @@ using Microsoft.ML.Data;
 using OvertakeAIML.Model;
 using Microsoft.ML.Trainers;
 
-namespace MLNetSolution
+namespace MLNet
 {
     public static class ModelBuilder
     {
-        private static string TRAIN_DATA_FILEPATH = "testData.csv";
+        private static string TRAIN_DATA_FILEPATH = @"..\..\..\testData.csv";
         private static string MODEL_FILE = ConsumeModel.MLNetModelPath;
 
         // Create MLContext to be shared across the model creation workflow objects 
@@ -87,7 +87,7 @@ namespace MLNetSolution
 
         public static string GetAbsolutePath(string relativePath)
         {
-            FileInfo _dataRoot = new FileInfo(typeof(MLNet).Assembly.Location);
+            FileInfo _dataRoot = new FileInfo(typeof(MLN).Assembly.Location);
             string assemblyFolderPath = _dataRoot.Directory.FullName;
 
             string fullPath = Path.Combine(assemblyFolderPath, relativePath);

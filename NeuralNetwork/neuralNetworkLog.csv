@@ -1,2 +1,2 @@
 TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy
-100,3,0.2,100,100,95
+100,3,0.2,100,100,96

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 
-namespace NeuralNetworkSolution
+namespace NeuralNetwork
 {
-    public class NeuralNetwork
+    public class NNModel
     {
         private readonly double _learningRate;
         private Matrix _weightHiddenOutput;
         private Matrix _weightInputHidden;
 
-        public NeuralNetwork(int numberOfInputNodes, int numberOfHiddenNodes, int numberOfOutputNodes, double learningRate)
+        public NNModel(int numberOfInputNodes, int numberOfHiddenNodes, int numberOfOutputNodes, double learningRate)
         {
             _learningRate = learningRate;
 
