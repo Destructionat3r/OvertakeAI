@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using OvertakeAI;
+using System.IO; //For Writing To CSV File
+using OvertakeAI; //For Getting Overtake Data
+using System.Linq; //For Counting ScoreCard
+using System.Text; //For Using StringBuilder
+using System.Collections.Generic; //For ScoreCard Bool List
+using static System.Console; //For Read/Write Line
 
 namespace NeuralNetworkSolution
 {
@@ -11,21 +14,21 @@ namespace NeuralNetworkSolution
 
         public void Run()
         {
-            Console.WriteLine("Neural Network");
-            Console.Write("Amount of data to train: ");
-            int amountOfData = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Amount of nodes in hidden layer: ");
-            int hiddenLayerNodes = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Learning Rate: ");
-            double learningRate = Convert.ToDouble(Console.ReadLine());
-            Console.Write("Amount of epochs: ");
-            int epochs = Convert.ToInt32(Console.ReadLine());
+            WriteLine("Neural Network");
+            Write("Amount of data to train: ");
+            int train = Convert.ToInt32(ReadLine());
+            Write("Amount of nodes in hidden layer: ");
+            int hiddenLayerNodes = Convert.ToInt32(ReadLine());
+            Write("Learning Rate: ");
+            double learningRate = Convert.ToDouble(ReadLine());
+            Write("Amount of epochs: ");
+            int epochs = Convert.ToInt32(ReadLine());
 
-            var trainDataSet = GetInputs(amountOfData).ToArray();
+            var trainDataSet = GetInputs(train).ToArray();
 
             var network = new NeuralNetwork(3, hiddenLayerNodes, 2, learningRate);            
 
-            Console.WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...\n");
+            WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...\n");
 
             for (var epoch = 0; epoch < epochs; epoch++)
                 foreach (var data in trainDataSet)
@@ -39,11 +42,11 @@ namespace NeuralNetworkSolution
 
             var scoreCard = new List<bool>();
 
-            Console.Write("Amount of data to predict: ");
-            amountOfData = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine();
+            Write("Amount of data to predict: ");
+            int test = Convert.ToInt32(ReadLine());
+            WriteLine();
 
-            var testDataSet = GetInputs(amountOfData).ToArray();
+            var testDataSet = GetInputs(test).ToArray();
 
             foreach (var data in testDataSet)
             {
@@ -56,17 +59,37 @@ namespace NeuralNetworkSolution
 
             string actualOutcome;
             string answerOutcome;
-            Console.WriteLine("Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
+            WriteLine("Initial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
+
             for (var i = 0; i < testDataSet.Length; i++)
             {
                 actualOutcome = Convert.ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
                 answerOutcome = scoreCard[i] ? "Correct" : "Incorrect";
-                Console.WriteLine($"{testDataSet[i][0], 18}{testDataSet[i][1], 23}{testDataSet[i][2], 21}{actualOutcome, 14}{answerOutcome, 17}");
+                WriteLine($"{testDataSet[i][0], 18}" +
+                    $"{testDataSet[i][1], 23}" +
+                    $"{testDataSet[i][2], 21}" +
+                    $"{actualOutcome, 14}" +
+                    $"{answerOutcome, 17}");
             }
 
-            Console.WriteLine($"\nPerformance is {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
+            double accuracy = (scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100;
+            WriteLine($"\nAccuracy: {accuracy}%");
 
-            Console.ReadKey();
+            //Create file if it doesn't exist and insert headings then print data or just print data
+            string path = "neuralNetworkLog.csv";
+            var csv = new StringBuilder();
+
+            if (!File.Exists(path))
+            {
+                var csvHeadings = "TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy";
+                csv.AppendLine(csvHeadings);
+            }
+
+            var csvData = $"{train},{hiddenLayerNodes},{learningRate},{epochs},{test},{accuracy}";
+            csv.AppendLine(csvData);
+
+            //Write the data to csv file
+            File.AppendAllText(path, csv.ToString());
         }
 
         public static string[][] GetInputs(int train)
@@ -77,7 +100,13 @@ namespace NeuralNetworkSolution
             for (int i = 0; i < train; i++)
             {
                 overtake = OvertakeData.GetData();
-                data[i] = new string[4] { overtake.InitialSeparationM.ToString(), overtake.OvertakingSpeedMPS.ToString(), overtake.OncomingSpeedMPS.ToString(), overtake.Success.ToString() };
+                data[i] = new string[4] 
+                { 
+                    overtake.InitialSeparationM.ToString(), 
+                    overtake.OvertakingSpeedMPS.ToString(), 
+                    overtake.OncomingSpeedMPS.ToString(), 
+                    overtake.Success.ToString() 
+                };
             }
 
             return data;

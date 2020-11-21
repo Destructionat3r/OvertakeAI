@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic; //For ScoreCard Bool List
-using System.Linq; //For Counting ScoreCard
 using System.IO; //For Writing To CSV File
-using System.Text; //For Using StringBuilder
 using OvertakeAI; //For Getting Overtake Data
+using System.Linq; //For Counting ScoreCard
+using System.Text; //For Using StringBuilder
 using OvertakeAIML.Model; //For The ML.Net Model
+using System.Collections.Generic; //For ScoreCard Bool List
 using static System.Console; //For Read/Write Line
 
 namespace MLNetSolution
@@ -105,7 +105,6 @@ namespace MLNetSolution
 
             //Count amount of correct values in score card to show accuracy percentage
             WriteLine($"\nAccuracy: {(scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100}%");
-            WriteLine("=============== End of process, hit any key to finish ===============");
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic; //For ScoreCard Bool List
+using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScroreCard
-using Accord.MachineLearning.DecisionTrees; //For Decision Tree
-using Accord.MachineLearning.DecisionTrees.Learning; //For C45 Learning
-using Accord.MachineLearning.DecisionTrees.Rules; //For Decision Set
-using Accord.Math.Optimization.Losses; //For ZeroOneLoss
 using Accord.Statistics.Filters; //For Codification
-using OvertakeAI; //For Getting Overtake 
+using System.Collections.Generic; //For ScoreCard Bool List
+using Accord.Math.Optimization.Losses; //For ZeroOneLoss
+using Accord.MachineLearning.DecisionTrees; //For Decision Tree
+using Accord.MachineLearning.DecisionTrees.Rules; //For Decision Set
+using Accord.MachineLearning.DecisionTrees.Learning; //For C45 Learning
 using static System.Console; //For Read/Write Line
 
 namespace DecisionTreeC45Solution

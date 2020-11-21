@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OvertakeAI
+﻿namespace OvertakeAI
 {
     public class OvertakeData
     {

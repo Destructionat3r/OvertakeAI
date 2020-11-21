@@ -6,7 +6,7 @@ namespace MLNetSolution
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(150, Console.WindowHeight);
+            Console.SetWindowSize(132, Console.WindowHeight);
             MLNet ml = new MLNet();
             ml.Run();
             Console.ReadKey();

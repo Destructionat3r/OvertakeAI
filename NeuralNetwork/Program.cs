@@ -1,5 +1,4 @@
 ﻿using System;
-using OvertakeAI;
 
 namespace NeuralNetworkSolution
 {
@@ -9,6 +8,7 @@ namespace NeuralNetworkSolution
         {
             NNSolution nn = new NNSolution();
             nn.Run();
+            Console.ReadKey();
         }
     }
 }
