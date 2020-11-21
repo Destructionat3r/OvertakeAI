@@ -1,4 +1,6 @@
-﻿namespace DecisionTreeC45Solution
+﻿using System;
+
+namespace DecisionTreeC45Solution
 {
     class Program
     {
@@ -6,6 +8,7 @@
         {
             DTC45 dt = new DTC45();
             dt.Run();
+            Console.ReadKey();
         }
     }
 }
