@@ -29,12 +29,14 @@ namespace DecisionTreeC45
             for (int i = 0; i < train; i++)
             {
                 overtake = OvertakeData.GetData();
+
                 trainInputs[i] = new double[3] 
                 { 
                     overtake.InitialSeparationM, 
                     overtake.OvertakingSpeedMPS, 
                     overtake.OncomingSpeedMPS 
                 };
+
                 trainOutputs[i] = Convert.ToInt32(overtake.Success);
             }
 
@@ -53,8 +55,12 @@ namespace DecisionTreeC45
             string[] possibleResults = { "Won't Pass", "Will Pass" };
             string predictedOutcome;
 
-            //Test data and print it out
-            WriteLine("\nInitial Seperation       Overtaking Speed       Oncoming Speed       Outcome       Prediction");
+            WriteLine($"{"Initial Seperation",18}" +
+                $"{"Overtaking Speed",23}" +
+                $"{"Oncoming Speed",21}" +
+                $"{"Outcome",14}" +
+                $"{"Prediction",17}");
+
             for (int i = 0; i < test; i++)
             {
                 //Get the data from OvertakeAI

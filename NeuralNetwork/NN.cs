@@ -82,7 +82,6 @@ namespace NeuralNetwork
                     $"{answerOutcome, 17}");
             }
 
-
             //Count amount of correct values in score card to show accuracy percentage
             double accuracy = Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2);
             WriteLine($"\nAccuracy: {accuracy}%");

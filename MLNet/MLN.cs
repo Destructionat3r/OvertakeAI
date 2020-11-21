@@ -13,16 +13,17 @@ namespace MLNet
     {
         public void Run()
         {
-            string path = @"..\..\..\testData.csv";
             Library.Overtake overtake;
             bool firstSuccess = true;
-            var csv = new StringBuilder();
 
             //Get amount of data the user to train
             WriteLine("ML.Net");
             Write("Amount of data to train: ");
             int train = Convert.ToInt32(ReadLine());
             WriteLine();
+
+            string path = @"..\..\..\testData.csv";
+            var csv = new StringBuilder();
 
             //Create file if it doesn't exist or overwrite it with null data
             File.WriteAllText(path, null);
@@ -64,10 +65,7 @@ namespace MLNet
             var scoreCard = new List<bool>();
             string[] possibleResults = { "Won't Pass", "Will Pass" };
             string answerOutcome;
-
-            //Test data and print it out
-            WriteLine("\nUsing model to make predictions -- Comparing actual Success with predicted Success from sample data...\n");
-
+            
             WriteLine($"{"Initial Seperation",18}" +
                 $"{"Overtaking Speed",23}" +
                 $"{"Oncoming Speed",21}" +
@@ -80,13 +78,14 @@ namespace MLNet
             {
                 //Get the data from OvertakeAI
                 overtake = OvertakeData.GetData();
+
                 ModelInput testInputs = new ModelInput() 
                 { 
                     InitialSeperation = (float)overtake.InitialSeparationM, 
                     OvertakingSpeed = (float)overtake.OvertakingSpeedMPS, 
                     OncomingSpeed = (float)overtake.OncomingSpeedMPS 
                 };
-                string outcome = overtake.Success.ToString();
+
                 actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
 
                 //Preict the result using the model

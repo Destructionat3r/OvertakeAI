@@ -12,10 +12,8 @@ namespace NeuralNetwork
         public NNModel(int numberOfInputNodes, int numberOfHiddenNodes, int numberOfOutputNodes, double learningRate)
         {
             _learningRate = learningRate;
-
             _weightInputHidden = Matrix.Create(numberOfHiddenNodes, numberOfInputNodes);
             _weightHiddenOutput = Matrix.Create(numberOfOutputNodes, numberOfHiddenNodes);
-
             RandomizeWeights();
         }
 
@@ -23,6 +21,7 @@ namespace NeuralNetwork
         {
             var rnd = new Random();
 
+            //Distribute -0.5 to 0.5
             _weightHiddenOutput.Initialize(() => rnd.NextDouble() - 0.5);
             _weightInputHidden.Initialize(() => rnd.NextDouble() - 0.5);
         }
@@ -31,12 +30,9 @@ namespace NeuralNetwork
         {
             var inputSignals = ConvertToMatrix(inputs);
             var targetSignals = ConvertToMatrix(targets);
-
             var hiddenOutputs = Sigmoid(_weightInputHidden * inputSignals);
             var finalOutputs = Sigmoid(_weightHiddenOutput * hiddenOutputs);
-
             var outputErrors = targetSignals - finalOutputs;
-
             var hiddenErrors = _weightHiddenOutput.Transpose() * outputErrors;
 
             _weightHiddenOutput += _learningRate * outputErrors * finalOutputs * (1.0 - finalOutputs) * hiddenOutputs.Transpose();
@@ -46,7 +42,6 @@ namespace NeuralNetwork
         public double[] Query(double[] inputs)
         {
             var inputSignals = ConvertToMatrix(inputs);
-
             var hiddenOutputs = Sigmoid(_weightInputHidden * inputSignals);
             var finalOutputs = Sigmoid(_weightHiddenOutput * hiddenOutputs);
 
