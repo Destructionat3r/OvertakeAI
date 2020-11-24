@@ -5,7 +5,9 @@ using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder
 using OvertakeAIML.Model; //For The ML.Net Model
 using System.Collections.Generic; //For ScoreCard Bool List
+using static System.Math; //For Round
 using static System.Console; //For Read/Write Line
+using static System.Convert; //For Convert
 
 namespace MLNet
 {
@@ -19,7 +21,7 @@ namespace MLNet
             //Get amount of data the user to train
             WriteLine("ML.Net");
             Write("Amount of data to train: ");
-            int train = Convert.ToInt32(ReadLine());
+            int train = ToInt32(ReadLine());
             WriteLine();
 
             string path = @"..\..\..\testData.csv";
@@ -57,7 +59,7 @@ namespace MLNet
 
             //Get the amount of data the user wants to predict against the model
             Write("\nAmount of data to predict: ");
-            int test = Convert.ToInt32(ReadLine());
+            int test = ToInt32(ReadLine());
 
             int[] testOutputs = new int[test];
             string actualOutcome;
@@ -108,15 +110,15 @@ namespace MLNet
                     $"{answerOutcome,17}");
 
                 if (firstSuccess == true)
-                    WriteLine($"{Math.Round(predictionResult.Score[0] * 100, 2),15}%" +
-                        $"{Math.Round(predictionResult.Score[1] * 100, 2),21}%");
+                    WriteLine($"{Round(predictionResult.Score[0] * 100, 2),15}%" +
+                        $"{Round(predictionResult.Score[1] * 100, 2),21}%");
                 else
-                    WriteLine($"{Math.Round(predictionResult.Score[1] * 100, 2),15}%" +
-                        $"{Math.Round(predictionResult.Score[0] * 100, 2),21}%");
+                    WriteLine($"{Round(predictionResult.Score[1] * 100, 2),15}%" +
+                        $"{Round(predictionResult.Score[0] * 100, 2),21}%");
             }
 
             //Count amount of correct values in score card to show accuracy percentage
-            WriteLine($"\nAccuracy: {Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2)}%");
+            WriteLine($"\nAccuracy: {Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2)}%");
         }
     }
 }

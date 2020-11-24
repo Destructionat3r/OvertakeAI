@@ -4,9 +4,9 @@ using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder
 using System.Collections.Generic; //For ScoreCard Bool List
-using static System.Math;
-using static System.Convert;
+using static System.Math; //For Round and Clamp
 using static System.Console; //For Read/Write Line
+using static System.Convert; //For Convert
 
 namespace NeuralNetwork
 {

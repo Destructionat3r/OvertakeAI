@@ -7,7 +7,9 @@ using Accord.Math.Optimization.Losses; //For ZeroOneLoss
 using Accord.MachineLearning.DecisionTrees; //For Decision Tree
 using Accord.MachineLearning.DecisionTrees.Rules; //For Decision Set
 using Accord.MachineLearning.DecisionTrees.Learning; //For C45 Learning
+using static System.Math; //For Round
 using static System.Console; //For Read/Write Line
+using static System.Convert; //For Convert
 
 namespace DecisionTreeC45
 {
@@ -20,7 +22,7 @@ namespace DecisionTreeC45
             //Get amount of data the user wants the decision tree to train
             WriteLine("Decision Tree - C45 Learning");
             Write("Amount of data to train: ");
-            int train = Convert.ToInt32(ReadLine());
+            int train = ToInt32(ReadLine());
 
             double[][] trainInputs = new double[train][];
             int[] trainOutputs = new int[train];
@@ -37,7 +39,7 @@ namespace DecisionTreeC45
                     overtake.OncomingSpeedMPS 
                 };
 
-                trainOutputs[i] = Convert.ToInt32(overtake.Success);
+                trainOutputs[i] = ToInt32(overtake.Success);
             }
 
             //Run decison tree using C4.5 algorithm using the train inputs and outputs
@@ -46,7 +48,7 @@ namespace DecisionTreeC45
 
             //Get the amount of data the user wants to predict against the decision tree
             Write("\nAmount of data to predict: ");
-            int test = Convert.ToInt32(ReadLine());
+            int test = ToInt32(ReadLine());
 
             double[] testInputs = new double[3];
             int predictedSingle;
@@ -86,12 +88,12 @@ namespace DecisionTreeC45
             }
 
             //Count amount of correct values in score card to show accuracy percentage
-            WriteLine($"\nAccuracy: {Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2)}%");
+            WriteLine($"\nAccuracy: {Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2)}%");
 
             //Get the training error of the decision tree
             int[] predicted = tree.Decide(trainInputs);
             double error = new ZeroOneLoss(trainOutputs).Loss(predicted);
-            WriteLine($"Training Error: {Math.Round(error, 2)}\n");
+            WriteLine($"Training Error: {Round(error, 2)}\n");
 
             //Print out the rules that the decision tree came up with
             WriteLine("Decision Tree Rules:");
