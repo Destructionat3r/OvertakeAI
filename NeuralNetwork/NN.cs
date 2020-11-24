@@ -4,6 +4,8 @@ using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder
 using System.Collections.Generic; //For ScoreCard Bool List
+using static System.Math;
+using static System.Convert;
 using static System.Console; //For Read/Write Line
 
 namespace NeuralNetwork
@@ -17,16 +19,19 @@ namespace NeuralNetwork
             //Get wanted variables from the user
             WriteLine("Neural Network");
             Write("Amount of data to train: ");
-            int train = Convert.ToInt32(ReadLine());
+            int train = ToInt32(ReadLine());
             Write("Amount of nodes in hidden layer: ");
-            int hiddenLayerNodes = Convert.ToInt32(ReadLine());
+            int hiddenLayerNodes = ToInt32(ReadLine());
             Write("Learning Rate: ");
-            double learningRate = Convert.ToDouble(ReadLine());
+            double learningRate = ToDouble(ReadLine());
             Write("Amount of epochs: ");
-            int epochs = Convert.ToInt32(ReadLine());
+            int epochs = ToInt32(ReadLine());
 
             //Get data OvertakeAI program
             var trainDataSet = GetInputs(train).ToArray();
+
+            //Get max values of trainDataSet to normalize data later on
+            var maxValues = GetMaxValues(trainDataSet);
 
             //Create neural network
             var network = new NNModel(3, hiddenLayerNodes, 2, learningRate);            
@@ -41,12 +46,12 @@ namespace NeuralNetwork
                     targets[PossibleResults.IndexOf(data.Last())] = 0.99;
 
                     var dataList = data.Take(3).Select(double.Parse).ToArray();
-                    network.Train(NormalizeData(dataList), targets);
+                    network.Train(NormalizeData(dataList, maxValues), targets);
                 }
 
             //Get the amount of data the user wants to predict against the neural network
             Write("Amount of data to predict: ");
-            int test = Convert.ToInt32(ReadLine());
+            int test = ToInt32(ReadLine());
             WriteLine();
 
             var testDataSet = GetInputs(test).ToArray();
@@ -55,7 +60,7 @@ namespace NeuralNetwork
             //Test the data against neural network and make predictions
             foreach (var data in testDataSet)
             {
-                var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray())).ToList();
+                var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray(), maxValues)).ToList();
                 var answer = PossibleResults[PossibleResults.IndexOf(data.Last())];
                 var predicted = PossibleResults[result.IndexOf(result.Max())];
                 scoreCard.Add(answer == predicted);
@@ -73,7 +78,7 @@ namespace NeuralNetwork
 
             for (var i = 0; i < testDataSet.Length; i++)
             {
-                actualOutcome = Convert.ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
+                actualOutcome = ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
                 answerOutcome = scoreCard[i] ? "Correct" : "Incorrect";
                 WriteLine($"{testDataSet[i][0], 18}" +
                     $"{testDataSet[i][1], 23}" +
@@ -83,7 +88,7 @@ namespace NeuralNetwork
             }
 
             //Count amount of correct values in score card to show accuracy percentage
-            double accuracy = Math.Round((scoreCard.Count(x => x) / Convert.ToDouble(scoreCard.Count)) * 100, 2);
+            double accuracy = Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2);
             WriteLine($"\nAccuracy: {accuracy}%");
             
             string path = @"..\..\..\neuralNetworkLog.csv";
@@ -132,20 +137,44 @@ namespace NeuralNetwork
         }
 
         //Normalize the data to be trained/tested
-        private static double[] NormalizeData(double[] input)
+        private static double[] NormalizeData(double[] input, double[] maxValues)
         {
-            var maxInitialSeperation = 280;
-            var maxOvertakingSpeed = 33;
-            var maxOncomingSpeed = 33;
+            var maxInitialSeperation = maxValues[0];
+            var maxOvertakingSpeed = maxValues[1];
+            var maxOncomingSpeed = maxValues[2];
 
             var normalized = new[]
             {
-                (input[0]/maxInitialSeperation) + 0.01,
-                (input[1]/maxOvertakingSpeed) + 0.01,
-                (input[2]/maxOncomingSpeed) + 0.01
+                (Clamp(input[0], 0, maxInitialSeperation)/maxInitialSeperation) + 0.01,
+                (Clamp(input[1], 0, maxOvertakingSpeed)/maxOvertakingSpeed) + 0.01,
+                (Clamp(input[2], 0, maxOncomingSpeed)/maxOncomingSpeed) + 0.01
             };
 
             return normalized;
+        }
+
+        //Get max values from training data
+        private static double[] GetMaxValues(string[][] input)
+        {
+            double maxInitalSeperation = 0;
+            double maxOvertakingSpeed = 0;
+            double maxOncomingSpeed = 0;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (ToDouble(input[i][0]) > maxInitalSeperation)
+                    maxInitalSeperation = ToDouble(input[i][0]);
+
+                if (ToDouble(input[i][1]) > maxOvertakingSpeed)
+                    maxOvertakingSpeed = ToDouble(input[i][1]);
+
+                if (ToDouble(input[i][2]) > maxOncomingSpeed)
+                    maxOncomingSpeed = ToDouble(input[i][2]);
+            }
+
+            double[] maxValues = new double[] { maxInitalSeperation, maxOvertakingSpeed, maxOncomingSpeed };
+
+            return maxValues;
         }
     }
 }
