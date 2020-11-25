@@ -178,7 +178,11 @@ namespace NeuralNetwork
                     maxOncomingSpeed = ToDouble(input[i][2]);
             }
 
-            double[] maxValues = new double[] { maxInitalSeperation, maxOvertakingSpeed, maxOncomingSpeed };
+            double[] maxValues = new double[] { 
+                maxInitalSeperation, 
+                maxOvertakingSpeed, 
+                maxOncomingSpeed 
+            };
 
             return maxValues;
         }
