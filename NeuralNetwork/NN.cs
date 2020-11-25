@@ -22,6 +22,9 @@ namespace NeuralNetwork
             double learningRate = GetUserDoubleInput("Learning Rate");
             int epochs = GetUserIntInput("Amount of epochs");
 
+            //Get the amount of data the user wants to predict against the neural network
+            int testAmount = GetUserIntInput("Amount of data to predict");
+
             //Get data OvertakeAI program
             var trainDataSet = GetOvertakeData(trainAmount).ToArray();
 
@@ -31,10 +34,14 @@ namespace NeuralNetwork
             //Create neural network
             var network = new NNModel(3, hiddenLayerNodes, 2, learningRate);            
 
-            WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...\n");
+            WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...");
 
             //Train the neural network with desired amount of epochs
             for (var epoch = 0; epoch < epochs; epoch++)
+            { 
+                SetCursorPosition(0, 8);
+                WriteLine($"Epoch {epoch + 1} of {epochs}");
+
                 foreach (var data in trainDataSet)
                 {
                     var targets = new[] { 0.01, 0.01 };
@@ -43,9 +50,7 @@ namespace NeuralNetwork
                     var dataList = data.Take(3).Select(double.Parse).ToArray();
                     network.Train(NormalizeData(dataList, maxValues), targets);
                 }
-
-            //Get the amount of data the user wants to predict against the neural network
-            int testAmount = GetUserIntInput("Amount of data to predict");
+            }
 
             var testDataSet = GetOvertakeData(testAmount).ToArray();
             var scoreCard = new List<bool>();

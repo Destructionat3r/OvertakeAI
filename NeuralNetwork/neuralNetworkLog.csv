@@ -9,3 +9,5 @@ TestNo,TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy
 8,1000,3,0.2,100,100,99
 9,100,2,0.1,100,100,59
 10,100,2,0.2,10,100,56
+11,10000,2,0.05,50,1000,95.1
+12,10000,2,0.1,100,1000,93.1
