@@ -10,7 +10,6 @@ using Accord.MachineLearning.DecisionTrees.Learning; //For C45 Learning
 using static System.Math; //For Round
 using static System.Console; //For Read/Write Line
 using static System.Convert; //For Convert
-using Accord.Math;
 
 namespace DecisionTreeC45
 {
