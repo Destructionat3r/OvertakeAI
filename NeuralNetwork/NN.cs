@@ -17,17 +17,13 @@ namespace NeuralNetwork
         {
             //Get wanted variables from the user
             WriteLine("Neural Network");
-            Write("Amount of data to train: ");
-            int train = ToInt32(ReadLine());
-            Write("Amount of nodes in hidden layer: ");
-            int hiddenLayerNodes = ToInt32(ReadLine());
-            Write("Learning Rate: ");
-            double learningRate = ToDouble(ReadLine());
-            Write("Amount of epochs: ");
-            int epochs = ToInt32(ReadLine());
+            int trainAmount = GetUserIntInput("Amount of data to train");
+            int hiddenLayerNodes = GetUserIntInput("Amount of nodes in hidden layer");
+            double learningRate = GetUserDoubleInput("Learning Rate");
+            int epochs = GetUserIntInput("Amount of epochs");
 
             //Get data OvertakeAI program
-            var trainDataSet = GetInputs(train).ToArray();
+            var trainDataSet = GetOvertakeData(trainAmount).ToArray();
 
             //Get max values of trainDataSet to normalize data later on
             var maxValues = GetMaxValues(trainDataSet);
@@ -49,11 +45,9 @@ namespace NeuralNetwork
                 }
 
             //Get the amount of data the user wants to predict against the neural network
-            Write("Amount of data to predict: ");
-            int test = ToInt32(ReadLine());
-            WriteLine();
+            int testAmount = GetUserIntInput("Amount of data to predict");
 
-            var testDataSet = GetInputs(test).ToArray();
+            var testDataSet = GetOvertakeData(testAmount).ToArray();
             var scoreCard = new List<bool>();
 
             //Test the data against neural network and make predictions
@@ -66,10 +60,10 @@ namespace NeuralNetwork
             }
 
             string actualOutcome;
-            string answerOutcome;
+            string predictedOutcome;
 
             //Print out all the test data
-            WriteLine($"{"Initial Seperation",18}" +
+            WriteLine($"\n{"Initial Seperation",18}" +
                 $"{"Overtaking Speed",23}" +
                 $"{"Oncoming Speed",21}" +
                 $"{"Outcome",14}" +
@@ -78,12 +72,12 @@ namespace NeuralNetwork
             for (var i = 0; i < testDataSet.Length; i++)
             {
                 actualOutcome = ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
-                answerOutcome = scoreCard[i] ? "Correct" : "Incorrect";
+                predictedOutcome = scoreCard[i] ? "Correct" : "Incorrect";
                 WriteLine($"{testDataSet[i][0], 18}" +
                     $"{testDataSet[i][1], 23}" +
                     $"{testDataSet[i][2], 21}" +
                     $"{actualOutcome, 14}" +
-                    $"{answerOutcome, 17}");
+                    $"{predictedOutcome, 17}");
             }
 
             //Count amount of correct values in score card to show accuracy percentage
@@ -98,8 +92,8 @@ namespace NeuralNetwork
             {
                 //Create file if it doesn't exist with no data
                 File.WriteAllText(path, null);
-                var csvHeadings = "TestNo,TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy";
-                csv.AppendLine(csvHeadings);
+                var nNHeadings = "TestNo,TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy";
+                csv.AppendLine(nNHeadings);
             }
 
             //Load data from neuralNetworkLog and skip headings
@@ -107,23 +101,53 @@ namespace NeuralNetwork
             int testNo = loadedCsv.Count();
 
             //Output data to neuralNetworkLog csv file
-            var csvData = $"{testNo + 1},{train},{hiddenLayerNodes},{learningRate},{epochs},{test},{accuracy}";
-            csv.AppendLine(csvData);
+            var nNData = $"{testNo + 1},{trainAmount},{hiddenLayerNodes},{learningRate},{epochs},{testAmount},{accuracy}";
+            csv.AppendLine(nNData);
 
             //Write the data to csv file
             File.AppendAllText(path, csv.ToString());
         }
+        
+        //Make sure user is inputting an int when required
+        public int GetUserIntInput(string text)
+        {
+            int input;
+
+            Write($"{text}: ");
+
+            while (!int.TryParse(ReadLine(), out input))
+            {
+                Write($"{text}: ");
+            }
+
+            return input;
+        }
+
+        //Make sure user is inputting an int when required
+        public double GetUserDoubleInput(string text)
+        {
+            double input;
+
+            Write($"{text}: ");
+
+            while (!double.TryParse(ReadLine(), out input))
+            {
+                Write($"{text}: ");
+            }
+
+            return input;
+        }
 
         //Get data from the OvertakeAI program
-        public static string[][] GetInputs(int loop)
+        public static string[][] GetOvertakeData(int loop)
         {
             Library.Overtake overtake;
-            string[][] data = new string[loop][];
+            string[][] overtakeData = new string[loop][];
 
             for (int i = 0; i < loop; i++)
             {
                 overtake = OvertakeData.GetData();
-                data[i] = new string[4] 
+                overtakeData[i] = new string[4] 
                 { 
                     overtake.InitialSeparationM.ToString(), 
                     overtake.OvertakingSpeedMPS.ToString(), 
@@ -132,7 +156,7 @@ namespace NeuralNetwork
                 };
             }
 
-            return data;
+            return overtakeData;
         }
 
         //Normalize the data to be trained/tested

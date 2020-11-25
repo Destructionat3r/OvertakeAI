@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO; //For Writing To CSV File
+﻿using System.IO; //For Writing To CSV File
 using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder
@@ -18,10 +17,13 @@ namespace MLNet
             Library.Overtake overtake;
             bool firstSuccess = true;
 
-            //Get amount of data the user to train
             WriteLine("ML.Net");
-            Write("Amount of data to train: ");
-            int train = ToInt32(ReadLine());
+
+            //Get amount of data the user to train
+            int trainAmount = GetUserInput("Amount of data to train");
+
+            //Get the amount of data the user wants to predict against the model
+            int testAmount = GetUserInput("Amount of data to predict");
             WriteLine();
 
             string path = @"..\..\..\testData.csv";
@@ -29,14 +31,16 @@ namespace MLNet
 
             //Create file if it doesn't exist or overwrite it with null data
             File.WriteAllText(path, null);
-            var data = "InitialSeperation," +
+
+            var overtakeData = "InitialSeperation," +
                 "OvertakingSpeed," +
                 "OncomingSpeed," +
                 "Success";
-            csv.AppendLine(data);
+
+            csv.AppendLine(overtakeData);
 
             //Get data from OvertakeAI program and add it to csv var
-            for (int i = 0; i < train; i++)
+            for (int i = 0; i < trainAmount; i++)
             {
                 overtake = OvertakeData.GetData();
 
@@ -44,11 +48,12 @@ namespace MLNet
                 if (i == 0)
                     firstSuccess = overtake.Success;
 
-                data = $"{overtake.InitialSeparationM}," +
+                overtakeData = $"{overtake.InitialSeparationM}," +
                     $"{overtake.OvertakingSpeedMPS}," +
                     $"{overtake.OncomingSpeedMPS}," +
                     $"{overtake.Success}";
-                csv.AppendLine(data);
+
+                csv.AppendLine(overtakeData);
             }
 
             //Write all the data to csv file
@@ -57,18 +62,14 @@ namespace MLNet
             //Create ML.Net model
             ModelBuilder.CreateModel();
 
-            //Get the amount of data the user wants to predict against the model
-            Write("\nAmount of data to predict: ");
-            int test = ToInt32(ReadLine());
-
-            int[] testOutputs = new int[test];
+            int[] testOutputs = new int[testAmount];
             string actualOutcome;
-            int index;
+            int outcomeIndex;
             var scoreCard = new List<bool>();
-            string[] possibleResults = { "Won't Pass", "Will Pass" };
-            string answerOutcome;
+            string[] possibleOutcomes = { "Won't Pass", "Will Pass" };
+            string predictionOutcome;
             
-            WriteLine($"{"Initial Seperation",18}" +
+            WriteLine($"\n{"Initial Seperation",18}" +
                 $"{"Overtaking Speed",23}" +
                 $"{"Oncoming Speed",21}" +
                 $"{"Outcome",14}" +
@@ -76,7 +77,7 @@ namespace MLNet
                 $"{"Pass Chance",16}" +
                 $"{"Won't Pass Chance",22}");
 
-            for (int i = 0; i < test; i++)
+            for (int i = 0; i < testAmount; i++)
             {
                 //Get the data from OvertakeAI
                 overtake = OvertakeData.GetData();
@@ -95,19 +96,19 @@ namespace MLNet
 
                 //Compare actual outcome to the predicted outcome
                 if (predictionResult.Prediction == "False")
-                    index = 0;
+                    outcomeIndex = 0;
                 else
-                    index = 1;
+                    outcomeIndex = 1;
 
-                scoreCard.Add(actualOutcome == possibleResults[index]);
-                answerOutcome = scoreCard[i] ? "Correct" : "Incorrect";
+                scoreCard.Add(actualOutcome == possibleOutcomes[outcomeIndex]);
+                predictionOutcome = scoreCard[i] ? "Correct" : "Incorrect";
 
                 //Print out the prediction data
                 Write($"{testInputs.InitialSeperation,18}" +
                     $"{testInputs.OvertakingSpeed,23}" +
                     $"{testInputs.OncomingSpeed,21}" +
                     $"{actualOutcome,14}" +
-                    $"{answerOutcome,17}");
+                    $"{predictionOutcome,17}");
 
                 if (firstSuccess == true)
                     WriteLine($"{Round(predictionResult.Score[0] * 100, 2),15}%" +
@@ -119,6 +120,21 @@ namespace MLNet
 
             //Count amount of correct values in score card to show accuracy percentage
             WriteLine($"\nAccuracy: {Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2)}%");
+        }
+
+        //Make sure user is inputting an int when required
+        public int GetUserInput(string text)
+        {
+            int input;
+
+            Write($"{text}: ");
+
+            while (!int.TryParse(ReadLine(), out input))
+            {
+                Write($"{text}: ");
+            }
+
+            return input;
         }
     }
 }

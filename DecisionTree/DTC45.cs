@@ -22,13 +22,13 @@ namespace DecisionTreeC45
             WriteLine("Decision Tree - C45 Learning");
 
             //Get amount of data the user wants the decision tree to train
-            int train = GetUserInput("Amount of data to train: ");
+            int trainAmount = GetUserInput("Amount of data to train");
 
-            double[][] trainInputs = new double[train][];
-            int[] trainOutputs = new int[train];
+            double[][] trainInputs = new double[trainAmount][];
+            int[] trainOutputs = new int[trainAmount];
 
             //Get data from OvertakeAI program and insert it into train inputs and outputs arrays
-            for (int i = 0; i < train; i++)
+            for (int i = 0; i < trainAmount; i++)
             {
                 overtake = OvertakeData.GetData();
 
@@ -47,13 +47,13 @@ namespace DecisionTreeC45
             DecisionTree tree = learningAlgorithm.Learn(trainInputs, trainOutputs);
 
             //Get the amount of data the user wants to predict against the decision tree
-            int test = GetUserInput("Amount of data to predict: ");
+            int testAmount = GetUserInput("Amount of data to predict");
 
             double[] testInputs;
-            int predictedSingle;
+            int outcomeIndex;
             string actualOutcome;
             var scoreCard = new List<bool>();
-            string[] possibleResults = { "Won't Pass", "Will Pass" };
+            string[] possibleOutcomes = { "Won't Pass", "Will Pass" };
             string predictedOutcome;
 
             WriteLine($"\n{"Initial Seperation",18}" +
@@ -63,7 +63,7 @@ namespace DecisionTreeC45
                 $"{"Prediction",17}");
 
             //Loop for amount of times that want to be predicted
-            for (int i = 0; i < test; i++)
+            for (int i = 0; i < testAmount; i++)
             {
                 //Get the data from OvertakeAI
                 overtake = OvertakeData.GetData();
@@ -77,10 +77,10 @@ namespace DecisionTreeC45
                 actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
 
                 //Preict the result using the decision tree
-                predictedSingle = tree.Decide(testInputs); 
+                outcomeIndex = tree.Decide(testInputs); 
 
                 //Compare actual outcome to the predicted outcome 
-                scoreCard.Add(actualOutcome == possibleResults[predictedSingle]);
+                scoreCard.Add(actualOutcome == possibleOutcomes[outcomeIndex]);
 
                 //Print out the data
                 predictedOutcome = scoreCard[i] ? "Correct" : "Incorrect";
@@ -102,20 +102,21 @@ namespace DecisionTreeC45
             //Print out the rules that the decision tree came up with
             WriteLine("Decision Tree Rules:");
             DecisionSet rules = tree.ToRules();
-            var codebook = new Codification("Possible Results", possibleResults);
+            var codebook = new Codification("Possible Results", possibleOutcomes);
             var encodedRules = rules.ToString(codebook, "Possible Results", CultureInfo.InvariantCulture);
             WriteLine($"{encodedRules}");
         }
 
+        //Make sure user is inputting an int when required
         public int GetUserInput(string text)
         {
             int input;
 
-            Write($"{text}");
+            Write($"{text}: ");
 
             while (!int.TryParse(ReadLine(), out input))
             {
-                Write(text);
+                Write($"{text}: ");
             }
 
             return input;
