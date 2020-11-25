@@ -159,23 +159,6 @@ namespace NeuralNetwork
             return overtakeData;
         }
 
-        //Normalize the data to be trained/tested
-        private static double[] NormalizeData(double[] input, double[] maxValues)
-        {
-            var maxInitialSeperation = maxValues[0];
-            var maxOvertakingSpeed = maxValues[1];
-            var maxOncomingSpeed = maxValues[2];
-
-            var normalized = new[]
-            {
-                (Clamp(input[0], 0, maxInitialSeperation)/maxInitialSeperation) + 0.01,
-                (Clamp(input[1], 0, maxOvertakingSpeed)/maxOvertakingSpeed) + 0.01,
-                (Clamp(input[2], 0, maxOncomingSpeed)/maxOncomingSpeed) + 0.01
-            };
-
-            return normalized;
-        }
-
         //Get max values from training data
         private static double[] GetMaxValues(string[][] input)
         {
@@ -198,6 +181,23 @@ namespace NeuralNetwork
             double[] maxValues = new double[] { maxInitalSeperation, maxOvertakingSpeed, maxOncomingSpeed };
 
             return maxValues;
+        }
+
+        //Normalize the data to be trained/tested
+        private static double[] NormalizeData(double[] input, double[] maxValues)
+        {
+            var maxInitialSeperation = maxValues[0];
+            var maxOvertakingSpeed = maxValues[1];
+            var maxOncomingSpeed = maxValues[2];
+
+            var normalized = new[]
+            {
+                (Clamp(input[0], 0, maxInitialSeperation)/maxInitialSeperation) + 0.01,
+                (Clamp(input[1], 0, maxOvertakingSpeed)/maxOvertakingSpeed) + 0.01,
+                (Clamp(input[2], 0, maxOncomingSpeed)/maxOncomingSpeed) + 0.01
+            };
+
+            return normalized;
         }
     }
 }
