@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO; //For Writing To CSV File
+﻿using System.IO; //For Writing To CSV File
 using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder

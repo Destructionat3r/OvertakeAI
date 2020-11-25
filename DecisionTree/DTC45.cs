@@ -10,6 +10,7 @@ using Accord.MachineLearning.DecisionTrees.Learning; //For C45 Learning
 using static System.Math; //For Round
 using static System.Console; //For Read/Write Line
 using static System.Convert; //For Convert
+using Accord.Math;
 
 namespace DecisionTreeC45
 {
@@ -19,10 +20,10 @@ namespace DecisionTreeC45
         {
             Library.Overtake overtake;
 
-            //Get amount of data the user wants the decision tree to train
             WriteLine("Decision Tree - C45 Learning");
-            Write("Amount of data to train: ");
-            int train = ToInt32(ReadLine());
+
+            //Get amount of data the user wants the decision tree to train
+            int train = GetUserInput("Amount of data to train: ");
 
             double[][] trainInputs = new double[train][];
             int[] trainOutputs = new int[train];
@@ -47,17 +48,16 @@ namespace DecisionTreeC45
             DecisionTree tree = learningAlgorithm.Learn(trainInputs, trainOutputs);
 
             //Get the amount of data the user wants to predict against the decision tree
-            Write("\nAmount of data to predict: ");
-            int test = ToInt32(ReadLine());
+            int test = GetUserInput("Amount of data to predict: ");
 
-            double[] testInputs = new double[3];
+            double[] testInputs;
             int predictedSingle;
             string actualOutcome;
             var scoreCard = new List<bool>();
             string[] possibleResults = { "Won't Pass", "Will Pass" };
             string predictedOutcome;
 
-            WriteLine($"{"Initial Seperation",18}" +
+            WriteLine($"\n{"Initial Seperation",18}" +
                 $"{"Overtaking Speed",23}" +
                 $"{"Oncoming Speed",21}" +
                 $"{"Outcome",14}" +
@@ -68,9 +68,13 @@ namespace DecisionTreeC45
             {
                 //Get the data from OvertakeAI
                 overtake = OvertakeData.GetData();
-                testInputs[0] = overtake.InitialSeparationM;
-                testInputs[1] = overtake.OvertakingSpeedMPS;
-                testInputs[2] = overtake.OncomingSpeedMPS;
+
+                testInputs = new double[3] { 
+                    overtake.InitialSeparationM, 
+                    overtake.OvertakingSpeedMPS,
+                    overtake.OncomingSpeedMPS 
+                };
+
                 actualOutcome = overtake.Success ? "Will Pass" : "Won't Pass";
 
                 //Preict the result using the decision tree
@@ -102,6 +106,20 @@ namespace DecisionTreeC45
             var codebook = new Codification("Possible Results", possibleResults);
             var encodedRules = rules.ToString(codebook, "Possible Results", CultureInfo.InvariantCulture);
             WriteLine($"{encodedRules}");
+        }
+
+        public int GetUserInput(string text)
+        {
+            int input;
+
+            Write($"{text}");
+
+            while (!int.TryParse(ReadLine(), out input))
+            {
+                Write(text);
+            }
+
+            return input;
         }
     }
 }
