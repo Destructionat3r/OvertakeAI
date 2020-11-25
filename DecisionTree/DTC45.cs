@@ -1,6 +1,6 @@
-﻿using System;
-using OvertakeAI; //For Getting Overtake Data
+﻿using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScroreCard
+using System.Globalization; // For CultureInfo
 using Accord.Statistics.Filters; //For Codification
 using System.Collections.Generic; //For ScoreCard Bool List
 using Accord.Math.Optimization.Losses; //For ZeroOneLoss
@@ -42,7 +42,7 @@ namespace DecisionTreeC45
                 trainOutputs[i] = ToInt32(overtake.Success);
             }
 
-            //Run decison tree using C4.5 algorithm using the train inputs and outputs
+            //Train decison tree using C4.5 algorithm using the trainInputs and trainOutputs
             var learningAlgorithm = new C45Learning();
             DecisionTree tree = learningAlgorithm.Learn(trainInputs, trainOutputs);
 
@@ -63,6 +63,7 @@ namespace DecisionTreeC45
                 $"{"Outcome",14}" +
                 $"{"Prediction",17}");
 
+            //Loop for amount of times that want to be predicted
             for (int i = 0; i < test; i++)
             {
                 //Get the data from OvertakeAI
@@ -99,7 +100,7 @@ namespace DecisionTreeC45
             WriteLine("Decision Tree Rules:");
             DecisionSet rules = tree.ToRules();
             var codebook = new Codification("Possible Results", possibleResults);
-            var encodedRules = rules.ToString(codebook, "Possible Results", System.Globalization.CultureInfo.InvariantCulture);
+            var encodedRules = rules.ToString(codebook, "Possible Results", CultureInfo.InvariantCulture);
             WriteLine($"{encodedRules}");
         }
     }
