@@ -97,7 +97,15 @@ namespace NeuralNetwork
             {
                 //Create file if it doesn't exist with no data
                 File.WriteAllText(path, null);
-                var nNHeadings = "TestNo,TrainAmount,HiddenLayerNodes,LearningRate,Epochs,TestAmount,Accuracy";
+
+                var nNHeadings = "TestNo," +
+                    "TrainAmount," +
+                    "HiddenLayerNodes," +
+                    "LearningRate," +
+                    "Epochs," +
+                    "TestAmount," +
+                    "Accuracy";
+
                 csv.AppendLine(nNHeadings);
             }
 
@@ -106,7 +114,14 @@ namespace NeuralNetwork
             int testNo = loadedCsv.Count();
 
             //Output data to neuralNetworkLog csv file
-            var nNData = $"{testNo + 1},{trainAmount},{hiddenLayerNodes},{learningRate},{epochs},{testAmount},{accuracy}";
+            var nNData = $"{testNo + 1}," +
+                $"{trainAmount}," +
+                $"{hiddenLayerNodes}," +
+                $"{learningRate}," +
+                $"{epochs}," +
+                $"{testAmount}," +
+                $"{accuracy}";
+
             csv.AppendLine(nNData);
 
             //Write the data to csv file
