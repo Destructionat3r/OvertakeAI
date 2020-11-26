@@ -64,6 +64,9 @@ namespace NeuralNetwork
                 scoreCard.Add(answer == predicted);
             }
 
+            //Count amount of correct values in score card to show accuracy percentage
+            double accuracy = Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2);
+
             string actualOutcome;
             string predictedOutcome;
 
@@ -85,8 +88,6 @@ namespace NeuralNetwork
                     $"{predictedOutcome, 17}");
             }
 
-            //Count amount of correct values in score card to show accuracy percentage
-            double accuracy = Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2);
             WriteLine($"\nAccuracy: {accuracy}%");
             
             string path = @"..\..\..\neuralNetworkLog.csv";
