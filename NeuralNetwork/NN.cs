@@ -111,10 +111,10 @@ namespace NeuralNetwork
 
             //Load data from neuralNetworkLog and skip headings
             List<string> loadedCsv = File.ReadAllLines(path).Skip(1).ToList();
-            int testNo = loadedCsv.Count();
+            int testNo = loadedCsv.Count() + 1;
 
             //Output data to neuralNetworkLog csv file
-            var nNData = $"{testNo + 1}," +
+            var nNData = $"{testNo}," +
                 $"{trainAmount}," +
                 $"{hiddenLayerNodes}," +
                 $"{learningRate}," +
