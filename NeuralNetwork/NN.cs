@@ -3,6 +3,7 @@ using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder
 using System.Collections.Generic; //For ScoreCard Bool List
+using Accord.Math.Optimization.Losses; //For ZeroOneLoss
 using static System.Math; //For Round and Clamp
 using static System.Console; //For Read/Write Line
 using static System.Convert; //For Convert
@@ -89,6 +90,21 @@ namespace NeuralNetwork
             }
 
             WriteLine($"\nAccuracy: {accuracy}%");
+
+            int[] predict = new int[trainAmount];
+            int[] outputs = new int[trainAmount];
+            int index = 0;
+            
+            foreach (var data in trainDataSet)
+            {
+                var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray(), maxValues)).ToList();
+                predict[index] = result.IndexOf(result.Max());
+                outputs[index] = PossibleResults.IndexOf(data.Last());
+                index++;
+            }
+
+            double error = new ZeroOneLoss(outputs).Loss(predict);
+            WriteLine($"Training Error: {Round(error, 2)}");
             
             string path = @"..\..\..\neuralNetworkLog.csv";
             var csv = new StringBuilder();            

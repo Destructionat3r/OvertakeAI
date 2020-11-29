@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Accord.Math" Version="3.8.2-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OvertakeAI\OvertakeAI.csproj" />
   </ItemGroup>
 
