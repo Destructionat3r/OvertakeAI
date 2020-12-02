@@ -33,16 +33,20 @@ namespace NeuralNetwork
             var maxValues = GetMaxValues(trainDataSet);
 
             //Create neural network
-            var network = new NNModel(3, hiddenLayerNodes, 2, learningRate);            
+            var network = new NNModel(3, hiddenLayerNodes, 2, learningRate);
+
+            int[] trainingPrediction = new int[trainAmount];
+            int[] trainingOutcome = new int[trainAmount];
+            int trainingIndex = 0;
+            double[] errorList = new double[epochs];
 
             WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...");
-
-            //Train the neural network with desired amount of epochs
+            
             for (var epoch = 0; epoch < epochs; epoch++)
             { 
-                SetCursorPosition(0, 8);
-                WriteLine($"Epoch {epoch + 1} of {epochs}");
+                Write($"Epoch {epoch + 1} of {epochs} - ");
 
+                //Train the neural network with each bit of training data
                 foreach (var data in trainDataSet)
                 {
                     var targets = new[] { 0.01, 0.01 };
@@ -51,6 +55,21 @@ namespace NeuralNetwork
                     var dataList = data.Take(3).Select(double.Parse).ToArray();
                     network.Train(NormalizeData(dataList, maxValues), targets);
                 }
+
+                //Test trained data against the neural network
+                foreach (var data in trainDataSet)
+                {
+                    var trainingResult = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray(), maxValues)).ToList();
+                    trainingOutcome[trainingIndex] = PossibleResults.IndexOf(data.Last());
+                    trainingPrediction[trainingIndex] = trainingResult.IndexOf(trainingResult.Max());
+                    trainingIndex++;
+                }
+
+                trainingIndex = 0;
+
+                //Get training error on neural network each epoch
+                errorList[epoch] = Round(new ZeroOneLoss(trainingOutcome).Loss(trainingPrediction), 2);
+                WriteLine($"Training Error: {Round(errorList[epoch], 2):F2}");
             }
 
             var testDataSet = GetOvertakeData(testAmount).ToArray();
@@ -59,10 +78,10 @@ namespace NeuralNetwork
             //Test the data against neural network and make predictions
             foreach (var data in testDataSet)
             {
-                var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray(), maxValues)).ToList();
-                var answer = PossibleResults[PossibleResults.IndexOf(data.Last())];
-                var predicted = PossibleResults[result.IndexOf(result.Max())];
-                scoreCard.Add(answer == predicted);
+                var testingResult = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray(), maxValues)).ToList();
+                var testingOutcome = PossibleResults[PossibleResults.IndexOf(data.Last())];
+                var testingPrediction = PossibleResults[testingResult.IndexOf(testingResult.Max())];
+                scoreCard.Add(testingOutcome == testingPrediction);
             }
 
             //Count amount of correct values in score card to show accuracy percentage
@@ -82,6 +101,7 @@ namespace NeuralNetwork
             {
                 actualOutcome = ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
                 predictedOutcome = scoreCard[i] ? "Correct" : "Incorrect";
+
                 WriteLine($"{testDataSet[i][0], 18}" +
                     $"{testDataSet[i][1], 23}" +
                     $"{testDataSet[i][2], 21}" +
@@ -89,23 +109,14 @@ namespace NeuralNetwork
                     $"{predictedOutcome, 17}");
             }
 
+            double minTrainingError = errorList.Min();
+            int epochNum = errorList.ToList().IndexOf(minTrainingError) + 1;
+            double finalTrainingError = Round(errorList.Last(), 2);
+
             WriteLine($"\nAccuracy: {accuracy}%");
+            WriteLine($"Lowest Training Error: {minTrainingError:F2} At Epoch {epochNum}");
+            WriteLine($"Ending Training Error: {finalTrainingError}");
 
-            int[] predict = new int[trainAmount];
-            int[] outputs = new int[trainAmount];
-            int index = 0;
-            
-            foreach (var data in trainDataSet)
-            {
-                var result = network.Query(NormalizeData(data.Take(3).Select(double.Parse).ToArray(), maxValues)).ToList();
-                predict[index] = result.IndexOf(result.Max());
-                outputs[index] = PossibleResults.IndexOf(data.Last());
-                index++;
-            }
-
-            double error = new ZeroOneLoss(outputs).Loss(predict);
-            WriteLine($"Training Error: {Round(error, 2)}");
-            
             string path = @"..\..\..\neuralNetworkLog.csv";
             var csv = new StringBuilder();            
 
@@ -115,29 +126,17 @@ namespace NeuralNetwork
                 //Create file if it doesn't exist with no data
                 File.WriteAllText(path, null);
 
-                var nNHeadings = "TestNo," +
-                    "TrainAmount," +
-                    "HiddenLayerNodes," +
-                    "LearningRate," +
-                    "Epochs," +
-                    "TestAmount," +
-                    "Accuracy";
-
+                var nNHeadings = "TestNo,TrainAmount,HiddenLayerNodes,LearningRate,LowestTrainingError,LowestTrainingErrorEpoch,FinalTrainingError,TotalEpochs,TestAmount,Accuracy";
                 csv.AppendLine(nNHeadings);
             }
 
             //Load data from neuralNetworkLog and skip headings
             List<string> loadedCsv = File.ReadAllLines(path).Skip(1).ToList();
+
             int testNo = loadedCsv.Count() + 1;
 
             //Output data to neuralNetworkLog csv file
-            var nNData = $"{testNo}," +
-                $"{trainAmount}," +
-                $"{hiddenLayerNodes}," +
-                $"{learningRate}," +
-                $"{epochs}," +
-                $"{testAmount}," +
-                $"{accuracy}";
+            var nNData = $"{testNo},{trainAmount},{hiddenLayerNodes},{learningRate},{minTrainingError},{epochNum},{finalTrainingError},{epochs},{testAmount},{accuracy}";
 
             csv.AppendLine(nNData);
 
@@ -153,9 +152,7 @@ namespace NeuralNetwork
             Write($"{text}: ");
 
             while (!int.TryParse(ReadLine(), out input))
-            {
                 Write($"{text}: ");
-            }
 
             return input;
         }
@@ -168,9 +165,7 @@ namespace NeuralNetwork
             Write($"{text}: ");
 
             while (!double.TryParse(ReadLine(), out input))
-            {
                 Write($"{text}: ");
-            }
 
             return input;
         }
@@ -181,9 +176,10 @@ namespace NeuralNetwork
             Library.Overtake overtake;
             string[][] overtakeData = new string[loop][];
 
-            for (int i = 0; i < loop; i++)
+            for (var i = 0; i < loop; i++)
             {
                 overtake = OvertakeData.GetData();
+
                 overtakeData[i] = new string[4] 
                 { 
                     overtake.InitialSeparationM.ToString(), 
@@ -203,7 +199,7 @@ namespace NeuralNetwork
             double maxOvertakingSpeed = 0;
             double maxOncomingSpeed = 0;
 
-            for (int i = 0; i < input.Length; i++)
+            for (var i = 0; i < input.Length; i++)
             {
                 if (ToDouble(input[i][0]) > maxInitalSeperation)
                     maxInitalSeperation = ToDouble(input[i][0]);
