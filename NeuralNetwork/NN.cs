@@ -85,7 +85,7 @@ namespace NeuralNetwork
             }
 
             //Count amount of correct values in score card to show accuracy percentage
-            double accuracy = Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)) * 100, 2);
+            double accuracy = Round((scoreCard.Count(x => x) / ToDouble(scoreCard.Count)), 4);
 
             string actualOutcome;
             string predictedOutcome;
@@ -113,7 +113,7 @@ namespace NeuralNetwork
             int epochNum = errorList.ToList().IndexOf(minTrainingError) + 1;
             double finalTrainingError = Round(errorList.Last(), 2);
 
-            WriteLine($"\nAccuracy: {accuracy}%");
+            WriteLine($"\nAccuracy: {accuracy * 100}%");
             WriteLine($"Lowest Training Error: {minTrainingError:F2} At Epoch {epochNum}");
             WriteLine($"Ending Training Error: {finalTrainingError}");
 
