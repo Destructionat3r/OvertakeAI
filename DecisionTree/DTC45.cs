@@ -114,6 +114,7 @@ namespace DecisionTreeC45
 
             Write($"{text}: ");
 
+            //Keep asking for input until a valid input is given
             while (!int.TryParse(ReadLine(), out input))
             {
                 Write($"{text}: ");

@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace NeuralNetwork
 {
+    //Code used from course material, can be found at https://github.com/Hagsten/NeuralNetwork
     public class NNModel
     {
         private readonly double _learningRate;

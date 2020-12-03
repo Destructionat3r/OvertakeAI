@@ -42,6 +42,7 @@ namespace NeuralNetwork
 
             WriteLine($"\nTraining network with {trainDataSet.Length} samples using {epochs} epochs...");
             
+            //Train the data and get the training error for every epoch
             for (var epoch = 0; epoch < epochs; epoch++)
             { 
                 Write($"Epoch {epoch + 1} of {epochs} - ");
@@ -109,6 +110,7 @@ namespace NeuralNetwork
                     $"{predictedOutcome, 17}");
             }
 
+            //Find the lowest training error and the epoch it reached that point
             double minTrainingError = errorList.Min();
             int epochNum = errorList.ToList().IndexOf(minTrainingError) + 1;
             double finalTrainingError = Round(errorList.Last(), 2);
@@ -126,7 +128,17 @@ namespace NeuralNetwork
                 //Create file if it doesn't exist with no data
                 File.WriteAllText(path, null);
 
-                var nNHeadings = "TestNo,TrainAmount,HiddenLayerNodes,LearningRate,LowestTrainingError,LowestTrainingErrorEpoch,FinalTrainingError,TotalEpochs,TestAmount,Accuracy";
+                var nNHeadings = "TestNo," +
+                    "TrainAmount," +
+                    "HiddenLayerNodes," +
+                    "LearningRate," +
+                    "LowestTrainingError," +
+                    "LowestTrainingErrorEpoch," +
+                    "FinalTrainingError," +
+                    "TotalEpochs," +
+                    "TestAmount," +
+                    "Accuracy";
+
                 csv.AppendLine(nNHeadings);
             }
 
@@ -136,7 +148,16 @@ namespace NeuralNetwork
             int testNo = loadedCsv.Count() + 1;
 
             //Output data to neuralNetworkLog csv file
-            var nNData = $"{testNo},{trainAmount},{hiddenLayerNodes},{learningRate},{minTrainingError},{epochNum},{finalTrainingError},{epochs},{testAmount},{accuracy}";
+            var nNData = $"{testNo}," +
+                $"{trainAmount}," +
+                $"{hiddenLayerNodes}," +
+                $"{learningRate}," +
+                $"{minTrainingError}," +
+                $"{epochNum}," +
+                $"{finalTrainingError}," +
+                $"{epochs}," +
+                $"{testAmount}," +
+                $"{accuracy}";
 
             csv.AppendLine(nNData);
 
@@ -151,6 +172,7 @@ namespace NeuralNetwork
 
             Write($"{text}: ");
 
+            //Keep asking for input until a valid input is given
             while (!int.TryParse(ReadLine(), out input))
                 Write($"{text}: ");
 
@@ -164,6 +186,7 @@ namespace NeuralNetwork
 
             Write($"{text}: ");
 
+            //Keep asking for input until a valid input is given
             while (!double.TryParse(ReadLine(), out input))
                 Write($"{text}: ");
 
@@ -227,6 +250,7 @@ namespace NeuralNetwork
             var maxOvertakingSpeed = maxValues[1];
             var maxOncomingSpeed = maxValues[2];
 
+            //Clamp input to maximum value if it's higher than the maximum value
             var normalized = new[]
             {
                 (Clamp(input[0], 0, maxInitialSeperation)/maxInitialSeperation) + 0.01,

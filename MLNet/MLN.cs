@@ -2,7 +2,6 @@
 using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
 using System.Text; //For Using StringBuilder
-using OvertakeAIML.Model; //For The ML.Net Model
 using System.Collections.Generic; //For ScoreCard Bool List
 using static System.Math; //For Round
 using static System.Console; //For Read/Write Line
@@ -129,6 +128,7 @@ namespace MLNet
 
             Write($"{text}: ");
 
+            //Keep asking for input until a valid input is given
             while (!int.TryParse(ReadLine(), out input))
             {
                 Write($"{text}: ");
