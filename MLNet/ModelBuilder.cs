@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using OvertakeAIML.Model;
 using Microsoft.ML.Trainers;
 
 namespace MLNet
