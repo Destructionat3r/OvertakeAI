@@ -130,6 +130,7 @@ namespace NeuralNetwork
                 $"{testAmount}," +
                 $"{accuracy}";
 
+            //Pass data through to be outputted to csv
             OutputData.OutputCsv(nNTestData);
 
             WriteLine("\nEnter own values to predict");
@@ -144,6 +145,7 @@ namespace NeuralNetwork
                 oncomingSpeed
             };
 
+            //Predict result against neural network
             var userResult = network.Query(NormalizeData(userTest, maxValues)).ToList();
             var userPrediction = PossibleResults[userResult.IndexOf(userResult.Max())];
             userPrediction = true ? "Will Pass" : "Won't Pass";
