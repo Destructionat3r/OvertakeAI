@@ -56,9 +56,9 @@ namespace DecisionTreeC45
             string[] possibleOutcomes = { "Won't Pass", "Will Pass" };
             string predictedOutcome;
 
-            WriteLine($"\n{"Initial Seperation",18}" +
-                $"{"Overtaking Speed",23}" +
-                $"{"Oncoming Speed",21}" +
+            WriteLine($"\n{"Initial Seperation (m)",21}" +
+                $"{"Overtaking Speed (m/s)",28}" +
+                $"{"Oncoming Speed (m/s)",26}" +
                 $"{"Outcome",14}" +
                 $"{"Prediction",17}");
 
@@ -84,10 +84,10 @@ namespace DecisionTreeC45
 
                 //Print out the data
                 predictedOutcome = scoreCard[i] ? "Correct" : "Incorrect";
-                WriteLine($"{testInputs[0],18}" +
-                    $"{testInputs[1],23}" +
-                    $"{testInputs[2],21}" +
-                    $"{actualOutcome,14}" +
+                WriteLine($"{Round(testInputs[0], 2).ToString("F"),14}" +
+                    $"{Round(testInputs[1], 2).ToString("F"),27}" +
+                    $"{Round(testInputs[2], 2).ToString("F"),27}" +
+                    $"{actualOutcome,22}" +
                     $"{predictedOutcome,17}");
             }
 

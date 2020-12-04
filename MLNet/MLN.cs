@@ -68,9 +68,9 @@ namespace MLNet
             string[] possibleOutcomes = { "Won't Pass", "Will Pass" };
             string predictionOutcome;
             
-            WriteLine($"\n{"Initial Seperation",18}" +
-                $"{"Overtaking Speed",23}" +
-                $"{"Oncoming Speed",21}" +
+            WriteLine($"\n{"Initial Seperation (m)",21}" +
+                $"{"Overtaking Speed (m/s)",28}" +
+                $"{"Oncoming Speed (m/s)",26}" +
                 $"{"Outcome",14}" +
                 $"{"Prediction",17}" +
                 $"{"Pass Chance",16}" +
@@ -103,10 +103,10 @@ namespace MLNet
                 predictionOutcome = scoreCard[i] ? "Correct" : "Incorrect";
 
                 //Print out the prediction data
-                Write($"{testInputs.InitialSeperation,18}" +
-                    $"{testInputs.OvertakingSpeed,23}" +
-                    $"{testInputs.OncomingSpeed,21}" +
-                    $"{actualOutcome,14}" +
+                Write($"{Round(testInputs.InitialSeperation,2),14}" +
+                    $"{Round(testInputs.OvertakingSpeed,2),27}" +
+                    $"{Round(testInputs.OncomingSpeed,2),27}" +
+                    $"{actualOutcome,22}" +
                     $"{predictionOutcome,17}");
 
                 if (firstSuccess == true)

@@ -3,7 +3,7 @@ using System.Threading.Tasks; //For Parallel
 
 namespace NeuralNetwork
 {
-    //Code used from course material, can be found at https://github.com/Hagsten/NeuralNetwork
+    //Code used from course material
     public class Matrix
     {
         private readonly double[][] _matrix;

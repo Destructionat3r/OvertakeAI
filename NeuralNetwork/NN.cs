@@ -92,9 +92,9 @@ namespace NeuralNetwork
             string predictedOutcome;
 
             //Print out all the test data
-            WriteLine($"\n{"Initial Seperation",18}" +
-                $"{"Overtaking Speed",23}" +
-                $"{"Oncoming Speed",21}" +
+            WriteLine($"\n{"Initial Seperation (m)",21}" +
+                $"{"Overtaking Speed (m/s)",28}" +
+                $"{"Oncoming Speed (m/s)",26}" +
                 $"{"Outcome",14}" +
                 $"{"Prediction",17}");
 
@@ -103,11 +103,11 @@ namespace NeuralNetwork
                 actualOutcome = ToBoolean(testDataSet[i][3]) ? "Will Pass" : "Won't Pass";
                 predictedOutcome = scoreCard[i] ? "Correct" : "Incorrect";
 
-                WriteLine($"{testDataSet[i][0], 18}" +
-                    $"{testDataSet[i][1], 23}" +
-                    $"{testDataSet[i][2], 21}" +
-                    $"{actualOutcome, 14}" +
-                    $"{predictedOutcome, 17}");
+                WriteLine($"{Round(ToDouble(testDataSet[i][0]), 2).ToString("F"),14}" +
+                    $"{Round(ToDouble(testDataSet[i][1]), 2).ToString("F"),27}" +
+                    $"{Round(ToDouble(testDataSet[i][2]), 2).ToString("F"),27}" +
+                    $"{actualOutcome,22}" +
+                    $"{predictedOutcome,17}");
             }
 
             //Find the lowest training error and the epoch it reached that point
@@ -119,37 +119,8 @@ namespace NeuralNetwork
             WriteLine($"Lowest Training Error: {minTrainingError:F2} At Epoch {epochNum}");
             WriteLine($"Ending Training Error: {finalTrainingError}");
 
-            string path = @"..\..\..\neuralNetworkLog.csv";
-            var csv = new StringBuilder();            
-
-            //Check if neuralNetworkLog exists
-            if (!File.Exists(path))
-            {
-                //Create file if it doesn't exist with no data
-                File.WriteAllText(path, null);
-
-                var nNHeadings = "TestNo," +
-                    "TrainAmount," +
-                    "HiddenLayerNodes," +
-                    "LearningRate," +
-                    "LowestTrainingError," +
-                    "LowestTrainingErrorEpoch," +
-                    "FinalTrainingError," +
-                    "TotalEpochs," +
-                    "TestAmount," +
-                    "Accuracy";
-
-                csv.AppendLine(nNHeadings);
-            }
-
-            //Load data from neuralNetworkLog and skip headings
-            List<string> loadedCsv = File.ReadAllLines(path).Skip(1).ToList();
-
-            int testNo = loadedCsv.Count() + 1;
-
-            //Output data to neuralNetworkLog csv file
-            var nNData = $"{testNo}," +
-                $"{trainAmount}," +
+            //Format variables into a single string
+            var nNTestData = $"{trainAmount}," +
                 $"{hiddenLayerNodes}," +
                 $"{learningRate}," +
                 $"{minTrainingError}," +
@@ -159,10 +130,33 @@ namespace NeuralNetwork
                 $"{testAmount}," +
                 $"{accuracy}";
 
-            csv.AppendLine(nNData);
+            OutputData.OutputCsv(nNTestData);
 
-            //Write the data to csv file
-            File.AppendAllText(path, csv.ToString());
+            WriteLine("\nEnter own values to predict");
+            double initialSeperation = GetUserDoubleInput("Initial Seperation (m)");
+            double overtakingSpeed = GetUserDoubleInput("Overtaking Speed (mps)");
+            double oncomingSpeed = GetUserDoubleInput("Oncoming Speed (mps)");
+
+            double[] userTest = new double[3]
+            {
+                initialSeperation,
+                overtakingSpeed,
+                oncomingSpeed
+            };
+
+            var userResult = network.Query(NormalizeData(userTest, maxValues)).ToList();
+            var userPrediction = PossibleResults[userResult.IndexOf(userResult.Max())];
+            userPrediction = true ? "Will Pass" : "Won't Pass";
+
+            WriteLine($"\n{"Initial Seperation (m)",21}" +
+                $"{"Overtaking Speed (m/s)",28}" +
+                $"{"Oncoming Speed (m/s)",26}" +
+                $"{"Prediction",17}");
+
+            WriteLine($"{Round(userTest[0],2),14}" +
+                    $"{Round(userTest[1],2),27}" +
+                    $"{Round(userTest[2],2),27}" +
+                    $"{userPrediction,25}");
         }
         
         //Make sure user is inputting an int when required
