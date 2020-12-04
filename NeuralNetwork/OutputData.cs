@@ -1,7 +1,7 @@
 ﻿using System.IO; //For Writing To CSV File
 using System.Linq; //For Counting ScoreCard
-using System.Collections.Generic;
-using System.Text;
+using System.Collections.Generic; //For Lists
+using System.Text; //For StringBuilder
 
 namespace NeuralNetwork
 {

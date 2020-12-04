@@ -1,7 +1,5 @@
-﻿using System.IO; //For Writing To CSV File
-using OvertakeAI; //For Getting Overtake Data
+﻿using OvertakeAI; //For Getting Overtake Data
 using System.Linq; //For Counting ScoreCard
-using System.Text; //For Using StringBuilder
 using System.Collections.Generic; //For ScoreCard Bool List
 using Accord.Math.Optimization.Losses; //For ZeroOneLoss
 using static System.Math; //For Round and Clamp
