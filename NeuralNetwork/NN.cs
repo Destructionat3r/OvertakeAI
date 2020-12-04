@@ -148,6 +148,7 @@ namespace NeuralNetwork
             var userPrediction = PossibleResults[userResult.IndexOf(userResult.Max())];
             userPrediction = true ? "Will Pass" : "Won't Pass";
 
+            //Print out user prediction data
             WriteLine($"\n{"Initial Seperation (m)",21}" +
                 $"{"Overtaking Speed (m/s)",28}" +
                 $"{"Oncoming Speed (m/s)",26}" +
