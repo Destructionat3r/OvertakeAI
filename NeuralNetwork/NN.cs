@@ -43,7 +43,7 @@ namespace NeuralNetwork
             //Train the data and get the training error for every epoch
             for (var epoch = 0; epoch < epochs; epoch++)
             { 
-                Write($"Epoch {epoch + 1} of {epochs} - ");
+                Write($"Epoch {epoch + 1, 3} of {epochs} - ");
 
                 //Train the neural network with each bit of training data
                 foreach (var data in trainDataSet)
